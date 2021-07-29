@@ -5,7 +5,8 @@ import { useState } from 'react'
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function Index() {
-  const { data, error } = useSwr('/api/users', fetcher)
+  let getEmailValue = 'something@naver.com'
+  const { data, error } = useSwr('/api/users?email=' + getEmailValue, fetcher)
   console.log('index data', data)
   console.log('index error', error)
   if (error) return <div>Failed to load users</div>
@@ -23,15 +24,15 @@ export default function Index() {
         <button>extes</button>
         <h1></h1>
       </div>
-    <ul>
-      {data.map((user) => (
-        <li key={user.id}>
-          <Link href="/user/[id]" as={`/user/${user.id}`}>
-            <a>{`${user.name} ${user.id}`}</a>
-          </Link>
-        </li>
-      ))}
-    </ul>
+      <ul>
+        {data.map((user) => (
+          <li key={user.id}>
+            <Link href="/user/[id]" as={`/user/${user.id}`}>
+              <a>{`${user.name} ${user.id}`}</a>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
