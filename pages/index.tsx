@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Create from './create'
+import Commenting from './commenting'
 
 const Blog = (props) => {
   // const [name, setName] = useState('')
@@ -25,16 +26,22 @@ const Blog = (props) => {
       <div className="page">
         <h1>My Blog</h1>
         <div>
-          <Create></Create>
+          <Create />
+        </div>
+
+        <br />
+
+        <div>
+          <Commenting />
         </div>
 
         {console.log('feed', props)}
         <main>
-          {props.users.map((user) => (
-            <div key={user.id} className="post">
-              <div>id = {user.id}</div>
-              <div>name = {user.name}</div>
-              <div className="content">email = {user.email}</div>
+          {props.comments.map((comments) => (
+            <div key={comments.id} className="post">
+              <div>id = {comments.id}</div>
+              <div>name = {comments.user.name}</div>
+              <div className="content">email = {comments.content}</div>
               <br />
             </div>
           ))}
@@ -46,10 +53,10 @@ const Blog = (props) => {
 
 export const getServerSideProps = async () => {
   const res = await fetch('http://localhost:3000/api/users')
-  const users = await res.json()
-  console.log('post', users)
+  const comments = await res.json()
+  console.log('post', comments)
   return {
-    props: { users },
+    props: { comments },
   }
 }
 

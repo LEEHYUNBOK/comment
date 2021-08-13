@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-const Create = () => {
+const Commenting = () => {
   const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [content, setContent] = useState('')
 
   const submitData = async (e: React.SyntheticEvent) => {
     try {
       console.log('submitdate', e)
-      const body = { name, email }
+      const body = { name, content }
 
-      await fetch(`http://localhost:3000/api/push`, {
+      await fetch(`http://localhost:3000/api/commenting`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -21,7 +21,7 @@ const Create = () => {
 
   return (
     <form onSubmit={submitData}>
-      <h1>Signup user</h1>
+      <h1>comment</h1>
       <input
         autoFocus
         onChange={(e) => setName(e.target.value)}
@@ -30,16 +30,15 @@ const Create = () => {
         value={name}
       />
       <br />
-      <input
+      <textarea
         id="textarea"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => setContent(e.target.value)}
         placeholder="Email address"
-        type="text"
-        value={email}
-      />
-      <input disabled={!name || !email} type="submit" value="Signup" />
+        value={content}
+      ></textarea>
+      <input disabled={!name || !content} type="submit" value="Signup" />
     </form>
   )
 }
 
-export default Create
+export default Commenting
