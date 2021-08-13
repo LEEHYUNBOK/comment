@@ -9,7 +9,7 @@ const Blog = (props) => {
       console.log('submitdate', e)
       const body = { name, email }
 
-      await fetch(`http://localhost:3000/api/push.tsx`, {
+      await fetch(`http://localhost:3000/api/push`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -33,12 +33,12 @@ const Blog = (props) => {
             type="text"
             value={name}
           />
-          <input
+          <br />
+          <textarea
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email address"
-            type="text"
             value={email}
-          />
+          ></textarea>
           <input disabled={!name || !email} type="submit" value="Signup" />
         </form>
 
