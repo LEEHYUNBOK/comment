@@ -10,7 +10,7 @@ export default async function handle(
 ) {
   const { name, email } = req.body
   console.log('name + email', name + ' ' + email)
-  const result = await prisma.user.create({
+  const result = await prisma.users.create({
     data: {
       name: name,
       email: email,
