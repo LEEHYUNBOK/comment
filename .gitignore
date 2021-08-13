@@ -58,8 +58,9 @@ typings/
 .env.local
 .env.*
 
-.next
-
+.next/
+.next/*
+*.pack
 # Mac files
 .DS_Store
 

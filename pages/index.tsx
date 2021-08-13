@@ -43,7 +43,7 @@ const Blog = (props) => {
         </form>
 
         {console.log('feed', props)}
-
+        <h1>zzzzzz</h1>
         <main>
           {props.users.map((user) => (
             <div key={user.id} className="post">
