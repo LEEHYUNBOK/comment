@@ -18,6 +18,7 @@ const Blog = (props) => {
       console.error(error)
     }
   }
+  const [commentss, setComments] = useState(props)
 
   return (
     <div>
