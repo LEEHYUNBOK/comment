@@ -13,6 +13,7 @@ const Blog = (props) => {
   const Like = async (e: any) => {
     try {
       const id = e
+
       await axios
         .post('http://localhost:3000/api/like', JSON.stringify(id), {
           headers: { 'Content-Type': 'application/json' },
@@ -98,7 +99,7 @@ const Blog = (props) => {
               >
                 Like {comment.like}
               </button>
-
+              <Commenting id={comment.id} />
               <br />
               <br />
             </div>

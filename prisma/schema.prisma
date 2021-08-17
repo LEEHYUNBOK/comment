@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Users {
-  id    Int     @id @default(autoincrement())
-  name String  @unique
-  email  String @unique
-  comments Comments[]
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  email      String       @unique
+  comments   Comments[]
+  InComments InComments[]
 }
 
 model Comments {
@@ -19,20 +20,21 @@ model Comments {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   String?
-  like Int  @default(0) 
+  like      Int      @default(0)
   authorId  Int
-  user    Users?    @relation(fields: [authorId], references: [id])
+  user      Users?   @relation(fields: [authorId], references: [id])
 
+  InComments InComments[]
 }
 
 model InComments {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String?
-  like Int  @default(0) 
-  authorId  Int
-  user    Users?    @relation(fields: [authorId], references: [id])
-  commentsId  Int
-  comments    Comments?    @relation(fields: [commentsId], references: [id])
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  content    String?
+  like       Int       @default(0)
+  authorId   Int
+  user       Users?    @relation(fields: [authorId], references: [id])
+  commentsId Int
+  comment    Comments? @relation(fields: [commentsId], references: [id])
 }
