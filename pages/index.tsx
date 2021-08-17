@@ -4,6 +4,12 @@ import Create from './create'
 import Commenting from './commenting'
 
 const Blog = (props) => {
+  const [comments, setComments] = useState(props.comments)
+  const [name, setName] = useState('')
+  const [content, setContent] = useState('')
+  const [error, setError] = useState('')
+
+  // 좋아요 기능
   const Like = async (e: any) => {
     try {
       const id = e
@@ -16,8 +22,30 @@ const Blog = (props) => {
       console.error(error)
     }
   }
+  // comments 추가 기능
+  const submitData = async (e: React.SyntheticEvent) => {
+    try {
+      setName('')
+      setContent('')
+      const body = { name, content }
 
-  const [comments, setComments] = useState(props.comments)
+      await axios
+        .post(`http://localhost:3000/api/commenting`, JSON.stringify(body), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => {
+          if (res.data === '사용자가 아닙니다.') {
+            setError(res.data)
+          } else {
+            setComments(res.data)
+          }
+        })
+      console.log('넘어가요~comments')
+    } catch (error) {
+      setError('실패하였습니다.')
+      console.error(error)
+    }
+  }
 
   return (
     <div>
@@ -28,11 +56,35 @@ const Blog = (props) => {
         </div>
 
         <br />
-
+        {/* 작성 부분 */}
         <div>
-          <Commenting />
+          <h1>comment</h1>
+          <input
+            autoFocus
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            type="text"
+            value={name}
+          />
+          <br />
+          <textarea
+            id="textarea"
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Email address"
+            value={content}
+          ></textarea>
+          <button
+            name="commenting"
+            disabled={!name || !content}
+            value="Signup"
+            onClick={submitData}
+          >
+            Signup
+          </button>
+          <div>&emsp;{error}</div>
         </div>
 
+        {/* comments 목록 부분 */}
         <main>
           {comments.map((comment) => (
             <div key={comment.id} className="post">
@@ -46,6 +98,7 @@ const Blog = (props) => {
               >
                 Like {comment.like}
               </button>
+
               <br />
               <br />
             </div>

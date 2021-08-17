@@ -24,7 +24,10 @@ export default async function handle(
       },
     })
 
-    res.json('')
+    const users = await prisma.comments.findMany({
+      include: { user: true },
+    })
+    res.json(users)
   } else {
     res.status(200).json('사용자가 아닙니다.')
   }

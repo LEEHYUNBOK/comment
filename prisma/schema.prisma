@@ -19,8 +19,20 @@ model Comments {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   String?
-  like Int  @default(0)    
-  authorId  Int?
+  like Int  @default(0) 
+  authorId  Int
   user    Users?    @relation(fields: [authorId], references: [id])
 
+}
+
+model InComments {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String?
+  like Int  @default(0) 
+  authorId  Int
+  user    Users?    @relation(fields: [authorId], references: [id])
+  commentsId  Int
+  comments    Comments?    @relation(fields: [commentsId], references: [id])
 }
