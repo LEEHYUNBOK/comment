@@ -10,10 +10,8 @@ const Create = () => {
       console.log('submitdate', e)
       const body = { name, email }
 
-      await fetch(`http://localhost:3000/api/push`, {
-        method: 'POST',
+      await axios.post(`http://localhost:3000/api/push`, JSON.stringify(body), {
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
       })
       console.log('넘어가요~create')
     } catch (error) {

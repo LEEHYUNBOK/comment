@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 const Commenting = () => {
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
+  const [error, setError] = useState('')
 
   const submitData = async (e: React.SyntheticEvent) => {
     try {
@@ -10,14 +12,14 @@ const Commenting = () => {
       setContent('')
       const body = { name, content }
 
-      await fetch(`http://localhost:3000/api/commenting`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      }).then((res) => res.json())
+      await axios
+        .post(`http://localhost:3000/api/commenting`, JSON.stringify(body), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => setError(res.data))
       console.log('넘어가요~comments')
     } catch (error) {
-      alert('흑흑...왜 안되지...?')
+      setError('실패하였습니다.')
       console.error(error)
     }
   }
@@ -65,6 +67,7 @@ const Commenting = () => {
       >
         Signup
       </button>
+      <div>{error}</div>
     </div>
   )
 }

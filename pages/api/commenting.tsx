@@ -24,9 +24,9 @@ export default async function handle(
       },
     })
     console.log('되긴했는데...')
-    res.json(result)
+    res.json('')
   } else {
     console.log('아놔 진짜 이게 왜 안되는데~~')
-    res.status(200).json('error')
+    res.status(200).json('사용자가 아닙니다.')
   }
 }
