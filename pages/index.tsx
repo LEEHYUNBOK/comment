@@ -6,19 +6,18 @@ import Commenting from './commenting'
 const Blog = (props) => {
   const Like = async (e: any) => {
     try {
-      console.log('e', e)
-
       const id = e
       await axios
         .post('http://localhost:3000/api/like', JSON.stringify(id), {
           headers: { 'Content-Type': 'application/json' },
         })
-        .then((res) => console.log('res', res.data))
+        .then((res) => setComments(res.data))
     } catch (error) {
       console.error(error)
     }
   }
-  const [commentss, setComments] = useState(props)
+
+  const [comments, setComments] = useState(props.comments)
 
   return (
     <div>
@@ -35,7 +34,7 @@ const Blog = (props) => {
         </div>
 
         <main>
-          {props.comments.map((comment) => (
+          {comments.map((comment) => (
             <div key={comment.id} className="post">
               <div>id = {comment.id}</div>
               <div>name = {comment.user.name}</div>
@@ -60,7 +59,6 @@ const Blog = (props) => {
 export const getServerSideProps = async () => {
   const res = await axios.get('http://localhost:3000/api/users')
   const comments = await res.data
-  console.log('왜 리셋임?')
 
   return {
     props: { comments },

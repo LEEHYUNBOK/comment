@@ -23,10 +23,9 @@ export default async function handle(
         user: { connect: { name: name } },
       },
     })
-    console.log('되긴했는데...')
+
     res.json('')
   } else {
-    console.log('아놔 진짜 이게 왜 안되는데~~')
     res.status(200).json('사용자가 아닙니다.')
   }
 }
