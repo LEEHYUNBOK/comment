@@ -4,6 +4,21 @@ import Create from './create'
 import Commenting from './commenting'
 
 const Blog = (props) => {
+  const Like = async (e: any) => {
+    try {
+      console.log('e', e)
+
+      const id = e
+      await axios
+        .post('http://localhost:3000/api/like', JSON.stringify(id), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => console.log('res', res.data))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div>
       <div className="page">
@@ -19,11 +34,19 @@ const Blog = (props) => {
         </div>
 
         <main>
-          {props.comments.map((comments) => (
-            <div key={comments.id} className="post">
-              <div>id = {comments.id}</div>
-              <div>name = {comments.user.name}</div>
-              <div className="content">comments = {comments.content}</div>
+          {props.comments.map((comment) => (
+            <div key={comment.id} className="post">
+              <div>id = {comment.id}</div>
+              <div>name = {comment.user.name}</div>
+              <div className="content">comments = {comment.content}</div>
+              <button
+                name="Like"
+                // onClick={Like(comment.id)}
+                onClick={() => Like({ id: comment.id })}
+              >
+                Like {comment.like}
+              </button>
+              <br />
               <br />
             </div>
           ))}
