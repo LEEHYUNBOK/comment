@@ -9,13 +9,24 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { name, content } = req.body
-  console.log('name + email', name + ' ' + content)
-  const result = await prisma.comments.create({
-    data: {
-      content: content,
-      user: { connect: { name: name } },
+  const users = await prisma.users.findUnique({
+    where: {
+      name,
     },
   })
-  console.log('result', result)
-  res.json(result)
+  console.log('users', users)
+
+  if (users !== null) {
+    const result = await prisma.comments.create({
+      data: {
+        content: content,
+        user: { connect: { name: name } },
+      },
+    })
+    console.log('되긴했는데...')
+    res.json(result)
+  } else {
+    console.log('아놔 진짜 이게 왜 안되는데~~')
+    res.status(200).json('error')
+  }
 }

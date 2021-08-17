@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 const Create = () => {
   const [name, setName] = useState('')
@@ -14,7 +15,9 @@ const Create = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
+      console.log('넘어가요~create')
     } catch (error) {
+      alert('흑흑...왜 안되지...?')
       console.error(error)
     }
   }
@@ -29,9 +32,7 @@ const Create = () => {
         type="text"
         value={name}
       />
-      <br />
       <input
-        id="textarea"
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email address"
         type="text"
