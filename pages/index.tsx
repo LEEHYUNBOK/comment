@@ -1,7 +1,9 @@
+import styles from '../styles/Home.module.scss'
 import { useState } from 'react'
 import axios from 'axios'
 import Create from './create'
 import Commenting from './commenting'
+import { symbolName } from 'typescript'
 
 const Blog = (props) => {
   const [comments, setComments] = useState(props.comments)
@@ -49,8 +51,8 @@ const Blog = (props) => {
   }
 
   return (
-    <div>
-      <div className="page">
+    <div className={styles.comments}>
+      <div>
         <h1>My Blog</h1>
         <div>
           <Create />
@@ -58,7 +60,7 @@ const Blog = (props) => {
 
         <br />
         {/* 작성 부분 */}
-        <div>
+        <div className={styles.comments_input}>
           <h1>comment</h1>
           <input
             autoFocus
@@ -69,6 +71,7 @@ const Blog = (props) => {
           />
           <br />
           <textarea
+            className={styles.comment_area}
             id="textarea"
             onChange={(e) => setContent(e.target.value)}
             placeholder="Email address"
@@ -88,10 +91,16 @@ const Blog = (props) => {
         {/* comments 목록 부분 */}
         <main>
           {comments.map((comment) => (
-            <div key={comment.id} className="post">
-              <div>id = {comment.id}</div>
-              <div>name = {comment.user.name}</div>
-              <div className="content">comments = {comment.content}</div>
+            <div key={comment.id} className={styles.comments_print}>
+              <div className={styles.comments_print_user}>
+                name = {comment.user.name}
+              </div>
+              <div className={styles.comments_print_date}>
+                {comment.createdAt}
+              </div>
+              <div className={styles.comments_print_content}>
+                {comment.content}
+              </div>
               <button
                 name="Like"
                 // onClick={Like(comment.id)}

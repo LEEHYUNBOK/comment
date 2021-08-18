@@ -1,3 +1,4 @@
+import styles from '../styles/Home.module.scss'
 import { useState } from 'react'
 import axios from 'axios'
 
@@ -6,18 +7,14 @@ const Commenting = (props) => {
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
-  console.log('res', props)
-  const id = props
-  console.log('gggres', id)
+  const { id } = props
 
   const inget = async (props: any) => {
-    console.log('get', props)
     const id = props
-    console.log('get2', id)
     const res = await axios
       .get('http://localhost:3000/api/incomment', {
         params: {
-          id: 1,
+          id: id,
         },
       })
       .then((res) => setComments(res.data))
@@ -27,13 +24,19 @@ const Commenting = (props) => {
     try {
       setName('')
       setContent('')
-      const body = { name, content }
+      const body = { name, content, id }
 
       await axios
         .post(`http://localhost:3000/api/incoinput`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
-        .then((res) => setError(res.data))
+        .then((res) => {
+          if (res.data === '사용자가 아닙니다.') {
+            setError(res.data)
+          } else {
+            setComments(res.data)
+          }
+        })
       console.log('넘어가요~comments')
     } catch (error) {
       setError('실패하였습니다.')
@@ -42,20 +45,25 @@ const Commenting = (props) => {
   }
 
   return (
-    <div>
+    <div className={styles.inComments_print}>
       <details>
         <summary onClick={() => inget(id)}>더보기</summary>
         <div>
           {comments.map((comment) => (
-            <div key={comment.id} className="post">
-              <div>&emsp;cid = {comment.id}</div>
-              <div>&emsp;cname = {comment.user.name}</div>
-              <div className="content">&emsp;ccomments = {comment.content}</div>
-              <br />
+            <div key={comment.id} className={styles.comments_print}>
+              <div className={styles.comments_print_user}>
+                cname = {comment.user.name}
+              </div>
+              <div className={styles.comments_print_date}>
+                {comment.createdAt}
+              </div>
+              <div className={styles.comments_print_content}>
+                {comment.content}
+              </div>
             </div>
           ))}
         </div>
-        <div>
+        <div className={styles.comments_input}>
           <input
             autoFocus
             onChange={(e) => setName(e.target.value)}
@@ -65,6 +73,7 @@ const Commenting = (props) => {
           />
           <br />
           <textarea
+            className={styles.comment_area}
             id="textarea"
             onChange={(e) => setContent(e.target.value)}
             placeholder="Email address"

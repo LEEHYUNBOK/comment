@@ -8,6 +8,8 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log('idididid0', req.body)
+
   const { name, content, id } = req.body
   const users = await prisma.users.findUnique({
     where: {
