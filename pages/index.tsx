@@ -71,7 +71,7 @@ const Blog = (props) => {
           />
           <br />
           <textarea
-            className={styles.comment_area}
+            className={styles.comment_input_area}
             id="textarea"
             onChange={(e) => setContent(e.target.value)}
             placeholder="Email address"

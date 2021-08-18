@@ -3,12 +3,28 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Commenting = (props) => {
-  const [comments, setComments] = useState([])
+  const [incomments, setIncomments] = useState([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
   const { id } = props
 
+  // 대댓글 좋아요 기능
+  const Like = async (e: any) => {
+    try {
+      const id = e
+
+      await axios
+        .post('http://localhost:3000/api/like', JSON.stringify(id), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => setIncomments(res.data))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  //대댓글 출력 기능
   const inget = async (props: any) => {
     const id = props
     const res = await axios
@@ -17,9 +33,10 @@ const Commenting = (props) => {
           id: id,
         },
       })
-      .then((res) => setComments(res.data))
+      .then((res) => setIncomments(res.data))
   }
 
+  // 대댓글 추가 기능
   const submitData = async (e: React.SyntheticEvent) => {
     try {
       setName('')
@@ -34,7 +51,7 @@ const Commenting = (props) => {
           if (res.data === '사용자가 아닙니다.') {
             setError(res.data)
           } else {
-            setComments(res.data)
+            setIncomments(res.data)
           }
         })
       console.log('넘어가요~comments')
@@ -49,17 +66,24 @@ const Commenting = (props) => {
       <details>
         <summary onClick={() => inget(id)}>더보기</summary>
         <div>
-          {comments.map((comment) => (
-            <div key={comment.id} className={styles.comments_print}>
+          {incomments.map((incomment) => (
+            <div key={incomment.id} className={styles.comments_print}>
               <div className={styles.comments_print_user}>
-                cname = {comment.user.name}
+                cname = {incomment.user.name}
               </div>
               <div className={styles.comments_print_date}>
-                {comment.createdAt}
+                {incomment.createdAt}
               </div>
               <div className={styles.comments_print_content}>
-                {comment.content}
+                {incomment.content}
               </div>
+              <button
+                name="Like"
+                // onClick={Like(comment.id)}
+                onClick={() => Like({ id: incomment.id })}
+              >
+                Like {incomment.like}
+              </button>
             </div>
           ))}
         </div>
@@ -73,7 +97,7 @@ const Commenting = (props) => {
           />
           <br />
           <textarea
-            className={styles.comment_area}
+            className={styles.comment_input_area}
             id="textarea"
             onChange={(e) => setContent(e.target.value)}
             placeholder="Email address"
