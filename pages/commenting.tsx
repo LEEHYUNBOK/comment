@@ -15,7 +15,7 @@ const Commenting = (props) => {
       const id = e
 
       await axios
-        .post('http://localhost:3000/api/like', JSON.stringify(id), {
+        .post('http://localhost:3000/api/inlike', JSON.stringify(id), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => setIncomments(res.data))

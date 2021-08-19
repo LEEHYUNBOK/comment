@@ -4,6 +4,7 @@ import axios from 'axios'
 import Create from './create'
 import Commenting from './commenting'
 import { symbolName } from 'typescript'
+import Delete from './delete'
 
 const Blog = (props) => {
   const [comments, setComments] = useState(props.comments)
@@ -108,6 +109,7 @@ const Blog = (props) => {
               >
                 Like {comment.like}
               </button>
+              <Delete id={comment.id} />
               <Commenting id={comment.id} />
               <br />
               <br />
