@@ -9,15 +9,14 @@ const Delete = (props) => {
   const dataDelete = async (e: React.SyntheticEvent) => {
     try {
       console.log('submitdate', e)
-      const body = { name, email, id }
 
-      await axios.post(
-        `http://localhost:3000/api/delete`,
-        JSON.stringify(body),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      await axios.delete(`http://localhost:3000/api/delete`, {
+        data: {
+          id,
+          name,
+          email,
+        },
+      })
       console.log('넘어가요~create')
     } catch (error) {
       alert('흑흑...왜 안되지...?')
@@ -44,6 +43,14 @@ const Delete = (props) => {
             value={email}
           />
           <input disabled={!name || !email} type="submit" value="Signup" />
+          {/* <button
+            name="commenting"
+            disabled={!name || !email}
+            value="Signup"
+            onClick={() => dd({ id: 1 })}
+          >
+            Signup
+          </button> */}
         </form>
       </details>
     </div>

@@ -9,8 +9,12 @@ import Delete from './delete'
 const Blog = (props) => {
   const [comments, setComments] = useState(props.comments)
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
+  const [delname, setDelname] = useState('')
+  const [delemail, setDelemail] = useState('')
+  const [delerror, setDelerror] = useState('')
 
   // 좋아요 기능
   const Like = async (e: any) => {
@@ -26,11 +30,13 @@ const Blog = (props) => {
       console.error(error)
     }
   }
+
   // comments 추가 기능
   const submitData = async (e: React.SyntheticEvent) => {
     try {
       setName('')
       setContent('')
+
       const body = { name, content }
 
       await axios
@@ -41,12 +47,46 @@ const Blog = (props) => {
           if (res.data === '사용자가 아닙니다.') {
             setError(res.data)
           } else {
+            setError('')
             setComments(res.data)
           }
         })
       console.log('넘어가요~comments')
     } catch (error) {
       setError('실패하였습니다.')
+      console.error(error)
+    }
+  }
+
+  // 삭제 기능
+  const dataDelete = async (e: any) => {
+    try {
+      setDelname('')
+      setDelemail('')
+
+      const id = e.id
+      const name = e.delname
+      const email = e.delemail
+
+      await axios
+        .delete(`http://localhost:3000/api/delete`, {
+          data: {
+            id,
+            name: name,
+            email: email,
+          },
+        })
+        .then((res) => {
+          if (res.data === '사용자가 아닙니다.') {
+            setDelerror(res.data)
+          } else {
+            setDelerror('')
+            setComments(res.data)
+          }
+        })
+      console.log('넘어가요~create')
+    } catch (error) {
+      alert('흑흑...왜 안되지...?')
       console.error(error)
     }
   }
@@ -102,6 +142,8 @@ const Blog = (props) => {
               <div className={styles.comments_print_content}>
                 {comment.content}
               </div>
+
+              {/* 좋아요 버튼 */}
               <button
                 name="Like"
                 // onClick={Like(comment.id)}
@@ -109,7 +151,45 @@ const Blog = (props) => {
               >
                 Like {comment.like}
               </button>
-              <Delete id={comment.id} />
+
+              {/* 삭제 버튼 */}
+              <div>
+                <details>
+                  <summary>삭제</summary>
+                  <input
+                    autoFocus
+                    onChange={(e) => setDelname(e.target.value)}
+                    placeholder="Name"
+                    type="text"
+                    value={delname}
+                  />
+                  <input
+                    autoFocus
+                    onChange={(e) => setDelemail(e.target.value)}
+                    placeholder="email"
+                    type="text"
+                    value={delemail}
+                  />
+                  <button
+                    name="commenting"
+                    disabled={!delname || !delemail}
+                    value="Signup"
+                    onClick={() =>
+                      dataDelete({
+                        id: comment.id,
+                        delname,
+                        delemail,
+                      })
+                    }
+                  >
+                    Signup
+                  </button>
+                  <div>&emsp;{delerror}</div>
+                </details>
+              </div>
+              {/* <Delete id={comment.id} /> */}
+
+              {/* 대댓글 버튼 */}
               <Commenting id={comment.id} />
               <br />
               <br />

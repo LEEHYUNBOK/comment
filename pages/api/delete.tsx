@@ -8,29 +8,44 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, email, id, il } = req.body
-  console.log('name + email', name + ' ' + email + ' ' + id + ' ' + il)
+  // console.log(req)
 
+  const { name, email, id, ty } = req.body
+  console.log('name + email', name + ' ' + email + ' ' + id + ' ' + ty)
   const com = await prisma.comments.findMany({
     where: {
       id: id,
       user: {
-        name,
-        email,
+        name: name,
+        email: email,
       },
     },
   })
+  const inco = await prisma.inComments.findMany({
+    where: {
+      commentsId: id,
+    },
+  })
 
-  console.log('users', com.length)
-  // if (com.length !== 0) {
-  //   const result = await prisma.comments.delete({
-  //     where: {
-  //       id: id,
-  //     },
-  //   })
-  //   console.log('result', result)
-  //   res.json(result)
-  // } else {
-  //   res.status(202).json('')
-  // }
+  if (com.length !== 0) {
+    if (inco.length !== 0) {
+      const result = await prisma.inComments.deleteMany({
+        where: {
+          commentsId: id,
+        },
+      })
+    }
+    const result = await prisma.comments.delete({
+      where: {
+        id: id,
+      },
+    })
+
+    const users = await prisma.comments.findMany({
+      include: { user: true },
+    })
+    res.json(users)
+  } else {
+    res.status(202).json('사용자가 아닙니다.')
+  }
 }
