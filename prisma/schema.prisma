@@ -15,15 +15,22 @@ model Users {
   InComments InComments[]
 }
 
-model Comments {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String?
-  like      Int      @default(0)
-  authorId  Int
-  user      Users?   @relation(fields: [authorId], references: [id])
+model Posts {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  Comments Comments[]
+}
 
+model Comments {
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  content    String?
+  like       Int          @default(0)
+  authorId   Int
+  user       Users?       @relation(fields: [authorId], references: [id])
+  postId     Int
+  post       Posts?       @relation(fields: [postId], references: [id])
   InComments InComments[]
 }
 

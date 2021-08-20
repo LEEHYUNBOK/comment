@@ -8,7 +8,9 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, content } = req.body
+  const { name, content, postId } = req.body
+  console.log('body', req.body)
+
   const users = await prisma.users.findUnique({
     where: {
       name,
@@ -21,10 +23,12 @@ export default async function handle(
       data: {
         content: content,
         user: { connect: { name: name } },
+        post: { connect: { id: postId } },
       },
     })
 
     const users = await prisma.comments.findMany({
+      where: { postId: postId },
       include: { user: true },
     })
     res.json(users)

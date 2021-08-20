@@ -8,7 +8,6 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // console.log(req)
   let len: any = prisma.comments
 
   const { name, email, id, ty } = req.body
@@ -27,15 +26,13 @@ export default async function handle(
       },
     },
   })
-
-  console.log('comcom', com.commentsId)
+  console.log('comcom', com[0].commentsId)
 
   const inco = await prisma.inComments.findMany({
     where: {
       commentsId: id,
     },
   })
-  console.log('inco', inco.length)
 
   if (com.length !== 0) {
     if (inco.length !== 0 && ty !== 'in') {
@@ -44,18 +41,24 @@ export default async function handle(
           commentsId: id,
         },
       })
-      console.log('akakakak')
     }
     const result = await len.delete({
       where: {
         id: id,
       },
     })
-
-    const users = await len.findMany({
-      include: { user: true },
-    })
-    res.json(users)
+    if (com[0].commentsId === undefined) {
+      const users = await len.findMany({
+        include: { user: true },
+      })
+      res.json(users)
+    } else {
+      const users = await len.findMany({
+        where: { commentsId: id },
+        include: { user: true },
+      })
+      res.json(users)
+    }
   } else {
     res.status(202).json('사용자가 아닙니다.')
   }

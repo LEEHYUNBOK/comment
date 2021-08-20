@@ -30,9 +30,11 @@ const Commenting = (props) => {
   //대댓글 출력 기능
   const inget = async (props: any) => {
     const id = props
+    const ty = 'in'
     const res = await axios
       .get('http://localhost:3000/api/incomment', {
-        params: {
+        data: {
+          ty: ty,
           id: id,
         },
       })

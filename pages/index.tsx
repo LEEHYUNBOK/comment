@@ -20,9 +20,8 @@ const Blog = (props) => {
   const Like = async (e: any) => {
     try {
       const id = e
-
       await axios
-        .post('http://localhost:3000/api/like', JSON.stringify(id), {
+        .put('http://localhost:3000/api/coLike', JSON.stringify(id), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => setComments(res.data))
@@ -37,12 +36,12 @@ const Blog = (props) => {
       setName('')
       setContent('')
       console.log('dadadaddaba', e)
-
-      const body = { name, content }
+      const postId = 1
+      const body = { name, content, postId }
       console.log('dadadaddaba', body)
 
       await axios
-        .post(`http://localhost:3000/api/commenting`, JSON.stringify(body), {
+        .post(`http://localhost:3000/api/coAdd`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
@@ -53,7 +52,6 @@ const Blog = (props) => {
             setComments(res.data)
           }
         })
-      console.log('넘어가요~comments')
     } catch (error) {
       setError('실패하였습니다.')
       console.error(error)
@@ -86,7 +84,6 @@ const Blog = (props) => {
             setComments(res.data)
           }
         })
-      console.log('넘어가요~create')
     } catch (error) {
       alert('흑흑...왜 안되지...?')
       console.error(error)
@@ -200,7 +197,7 @@ const Blog = (props) => {
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get('http://localhost:3000/api/users')
+  const res = await axios.get('http://localhost:3000/api/coPrint')
   const comments = await res.data
 
   return {
