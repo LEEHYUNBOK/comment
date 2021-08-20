@@ -31,13 +31,15 @@ const Blog = (props) => {
     }
   }
 
-  // comments 추가 기능
+  // 댓글 추가 기능
   const submitData = async (e: React.SyntheticEvent) => {
     try {
       setName('')
       setContent('')
+      console.log('dadadaddaba', e)
 
       const body = { name, content }
+      console.log('dadadaddaba', body)
 
       await axios
         .post(`http://localhost:3000/api/commenting`, JSON.stringify(body), {
@@ -69,7 +71,7 @@ const Blog = (props) => {
       const email = e.delemail
 
       await axios
-        .delete(`http://localhost:3000/api/delete`, {
+        .delete(`http://localhost:3000/api/commentdelete`, {
           data: {
             id,
             name: name,
@@ -118,12 +120,8 @@ const Blog = (props) => {
             placeholder="Email address"
             value={content}
           ></textarea>
-          <button
-            name="commenting"
-            disabled={!name || !content}
-            value="Signup"
-            onClick={submitData}
-          >
+
+          <button name="commenting" value="Signup" onClick={submitData}>
             Signup
           </button>
           <div>&emsp;{error}</div>

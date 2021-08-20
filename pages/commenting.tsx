@@ -7,6 +7,9 @@ const Commenting = (props) => {
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
+  const [delname, setDelname] = useState('')
+  const [delemail, setDelemail] = useState('')
+  const [delerror, setDelerror] = useState('')
   const { id } = props
 
   // 대댓글 좋아요 기능
@@ -15,7 +18,7 @@ const Commenting = (props) => {
       const id = e
 
       await axios
-        .post('http://localhost:3000/api/inlike', JSON.stringify(id), {
+        .put('http://localhost:3000/api/inlike', JSON.stringify(id), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => setIncomments(res.data))
@@ -61,6 +64,39 @@ const Commenting = (props) => {
     }
   }
 
+  // 삭제 기능
+  const dataDelete = async (e: any) => {
+    try {
+      setDelname('')
+      setDelemail('')
+      const id = e.id
+      const name = e.delname
+      const email = e.delemail
+
+      await axios
+        .delete(`http://localhost:3000/api/commentdelete`, {
+          data: {
+            id,
+            name: name,
+            email: email,
+            ty: 'in',
+          },
+        })
+        .then((res) => {
+          if (res.data === '사용자가 아닙니다.') {
+            setDelerror(res.data)
+          } else {
+            setDelerror('')
+            setIncomments(res.data)
+          }
+        })
+      console.log('넘어가요~create')
+    } catch (error) {
+      alert('흑흑...왜 안되지...?')
+      console.error(error)
+    }
+  }
+
   return (
     <div className={styles.inComments_print}>
       <details>
@@ -69,7 +105,7 @@ const Commenting = (props) => {
           {incomments.map((incomment) => (
             <div key={incomment.id} className={styles.comments_print}>
               <div className={styles.comments_print_user}>
-                cname = {incomment.user.name}
+                cname = {incomment.user.name} {incomment.id}
               </div>
               <div className={styles.comments_print_date}>
                 {incomment.createdAt}
@@ -84,6 +120,42 @@ const Commenting = (props) => {
               >
                 Like {incomment.like}
               </button>
+
+              {/* 삭제 버튼 */}
+              <div>
+                <details>
+                  <summary>삭제</summary>
+                  <input
+                    autoFocus
+                    onChange={(e) => setDelname(e.target.value)}
+                    placeholder="Name"
+                    type="text"
+                    value={delname}
+                  />
+                  <input
+                    autoFocus
+                    onChange={(e) => setDelemail(e.target.value)}
+                    placeholder="email"
+                    type="text"
+                    value={delemail}
+                  />
+                  <button
+                    name="commenting"
+                    disabled={!delname || !delemail}
+                    value="Signup"
+                    onClick={() =>
+                      dataDelete({
+                        id: incomment.id,
+                        delname,
+                        delemail,
+                      })
+                    }
+                  >
+                    Signup
+                  </button>
+                  <div>&emsp;{delerror}</div>
+                </details>
+              </div>
             </div>
           ))}
         </div>
