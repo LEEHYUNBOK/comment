@@ -1,10 +1,10 @@
 import prisma from '../../lib/prisma'
 
 export default async function handle(req, res) {
-  const { id } = req.body
+  const { id } = req.query
 
   const users = await prisma.inComments.findMany({
-    where: { commentsId: id },
+    where: { commentsId: Number(id) },
     include: { user: true },
   })
 

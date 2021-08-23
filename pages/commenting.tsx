@@ -1,6 +1,7 @@
 import styles from '../styles/Home.module.scss'
 import { useState } from 'react'
 import axios from 'axios'
+import Delete from './delete'
 
 const Commenting = (props) => {
   const [incomments, setIncomments] = useState([])
@@ -33,8 +34,7 @@ const Commenting = (props) => {
     const ty = 'in'
     const res = await axios
       .get('http://localhost:3000/api/incomment', {
-        data: {
-          ty: ty,
+        params: {
           id: id,
         },
       })
@@ -71,6 +71,9 @@ const Commenting = (props) => {
     try {
       setDelname('')
       setDelemail('')
+      const commentId = props.id
+      console.log('lllllll', commentId)
+
       const id = e.id
       const name = e.delname
       const email = e.delemail
@@ -78,6 +81,7 @@ const Commenting = (props) => {
       await axios
         .delete(`http://localhost:3000/api/commentdelete`, {
           data: {
+            commentId,
             id,
             name: name,
             email: email,
@@ -124,43 +128,16 @@ const Commenting = (props) => {
               </button>
 
               {/* 삭제 버튼 */}
-              <div>
-                <details>
-                  <summary>삭제</summary>
-                  <input
-                    autoFocus
-                    onChange={(e) => setDelname(e.target.value)}
-                    placeholder="Name"
-                    type="text"
-                    value={delname}
-                  />
-                  <input
-                    autoFocus
-                    onChange={(e) => setDelemail(e.target.value)}
-                    placeholder="email"
-                    type="text"
-                    value={delemail}
-                  />
-                  <button
-                    name="commenting"
-                    disabled={!delname || !delemail}
-                    value="Signup"
-                    onClick={() =>
-                      dataDelete({
-                        id: incomment.id,
-                        delname,
-                        delemail,
-                      })
-                    }
-                  >
-                    Signup
-                  </button>
-                  <div>&emsp;{delerror}</div>
-                </details>
-              </div>
+              <details>
+                <summary>삭제</summary>
+                <Delete commentId={incomment.id} dataDelete={dataDelete} />
+                <div>{delerror}</div>
+              </details>
             </div>
           ))}
         </div>
+
+        {/* 작성 부분 */}
         <div className={styles.comments_input}>
           <input
             autoFocus

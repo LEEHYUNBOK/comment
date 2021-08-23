@@ -12,8 +12,6 @@ const Blog = (props) => {
   const [email, setEmail] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
-  const [delname, setDelname] = useState('')
-  const [delemail, setDelemail] = useState('')
   const [delerror, setDelerror] = useState('')
 
   // 좋아요 기능
@@ -61,8 +59,7 @@ const Blog = (props) => {
   // 삭제 기능
   const dataDelete = async (e: any) => {
     try {
-      setDelname('')
-      setDelemail('')
+      console.log('gkgkkgkg', e)
 
       const id = e.id
       const name = e.delname
@@ -129,7 +126,7 @@ const Blog = (props) => {
           {comments.map((comment) => (
             <div key={comment.id} className={styles.comments_print}>
               <div className={styles.comments_print_user}>
-                name = {comment.user.name}
+                name = {comment.user.name} postId = {comment.postId}
               </div>
               <div className={styles.comments_print_date}>
                 {comment.createdAt}
@@ -148,42 +145,11 @@ const Blog = (props) => {
               </button>
 
               {/* 삭제 버튼 */}
-              <div>
-                <details>
-                  <summary>삭제</summary>
-                  <input
-                    autoFocus
-                    onChange={(e) => setDelname(e.target.value)}
-                    placeholder="Name"
-                    type="text"
-                    value={delname}
-                  />
-                  <input
-                    autoFocus
-                    onChange={(e) => setDelemail(e.target.value)}
-                    placeholder="email"
-                    type="text"
-                    value={delemail}
-                  />
-                  <button
-                    name="commenting"
-                    disabled={!delname || !delemail}
-                    value="Signup"
-                    onClick={() =>
-                      dataDelete({
-                        id: comment.id,
-                        delname,
-                        delemail,
-                      })
-                    }
-                  >
-                    Signup
-                  </button>
-                  <div>&emsp;{delerror}</div>
-                </details>
-              </div>
-              {/* <Delete id={comment.id} /> */}
-
+              <details>
+                <summary>삭제</summary>
+                <Delete commentId={comment.id} dataDelete={dataDelete} />
+                <div>{delerror}</div>
+              </details>
               {/* 대댓글 버튼 */}
               <Commenting id={comment.id} />
               <br />

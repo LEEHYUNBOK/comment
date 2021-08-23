@@ -10,7 +10,7 @@ export default async function handle(
 ) {
   let len: any = prisma.comments
 
-  const { name, email, id, ty } = req.body
+  const { name, email, id, commentId, ty } = req.body
   function setting() {
     ty === 'in' ? (len = prisma.inComments) : len
   }
@@ -26,7 +26,7 @@ export default async function handle(
       },
     },
   })
-  console.log('comcom', com[0].commentsId)
+  // console.log('comcom', com[0].commentsId)
 
   const inco = await prisma.inComments.findMany({
     where: {
@@ -49,12 +49,13 @@ export default async function handle(
     })
     if (com[0].commentsId === undefined) {
       const users = await len.findMany({
+        where: { postId: 1 },
         include: { user: true },
       })
       res.json(users)
     } else {
       const users = await len.findMany({
-        where: { commentsId: id },
+        where: { commentsId: commentId },
         include: { user: true },
       })
       res.json(users)
