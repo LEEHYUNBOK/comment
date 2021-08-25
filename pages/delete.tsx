@@ -2,38 +2,36 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Delete = (props) => {
-  const [delname, setDelname] = useState('')
-  const [delemail, setDelemail] = useState('')
-  const { commentId } = props
+  const [deleteName, setDeleteName] = useState('')
+  const [deletePassword, setDeletePassword] = useState('')
+  const { id } = props
 
   return (
     <div>
       <input
-        autoFocus
-        onChange={(e) => setDelname(e.target.value)}
+        onChange={(e) => setDeleteName(e.target.value)}
         placeholder="Name"
         type="text"
-        value={delname}
+        value={deleteName}
       />
       <input
-        autoFocus
-        onChange={(e) => setDelemail(e.target.value)}
-        placeholder="email"
+        onChange={(e) => setDeletePassword(e.target.value)}
+        placeholder="password"
         type="text"
-        value={delemail}
+        value={deletePassword}
       />
       <button
         name="commenting"
-        disabled={!delname || !delemail}
+        disabled={!deleteName || !deletePassword}
         value="Signup"
         onClick={() => (
           props.dataDelete({
-            id: commentId,
-            delname,
-            delemail,
+            id,
+            deleteName,
+            deletePassword,
           }),
-          setDelemail(''),
-          setDelname('')
+          setDeleteName(''),
+          setDeletePassword('')
         )}
       >
         Signup

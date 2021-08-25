@@ -1,14 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prisma'
 
-// POST /api/post
-// Required fields in body: title, authorEmail
-// Optional fields in body: content
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.body
+  const { id, ty } = req.body
 
   const likeNum = await prisma.comments.findUnique({
     where: {
@@ -25,7 +22,7 @@ export default async function handle(
 
   const users = await prisma.comments.findMany({
     where: { postId: 1 },
-    include: { user: true },
+    include: { Users: true },
   })
   res.json(users)
 }

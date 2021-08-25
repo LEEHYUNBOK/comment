@@ -5,21 +5,21 @@ import Create from './create'
 import Commenting from './commenting'
 import { symbolName } from 'typescript'
 import Delete from './delete'
+import Comment from './comment'
 
 const Blog = (props) => {
   const [comments, setComments] = useState(props.comments)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [content, setContent] = useState('')
   const [error, setError] = useState('')
-  const [delerror, setDelerror] = useState('')
+  const [deleteError, setDeleteError] = useState('')
 
   // 좋아요 기능
   const Like = async (e: any) => {
     try {
-      const id = e
+      const ty = 'like'
+      const { id } = e
+      const body = { id, ty }
       await axios
-        .put('http://localhost:3000/api/coLike', JSON.stringify(id), {
+        .put('http://localhost:3000/api/commentLike', JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => setComments(res.data))
@@ -29,17 +29,18 @@ const Blog = (props) => {
   }
 
   // 댓글 추가 기능
-  const submitData = async (e: React.SyntheticEvent) => {
+  const submitData = async (e: any) => {
     try {
-      setName('')
-      setContent('')
       console.log('dadadaddaba', e)
       const postId = 1
-      const body = { name, content, postId }
+      const password = e.password
+      const name = e.name
+      const content = e.content
+      const body = { name, content, postId, password }
       console.log('dadadaddaba', body)
 
       await axios
-        .post(`http://localhost:3000/api/coAdd`, JSON.stringify(body), {
+        .post(`http://localhost:3000/api/commentAdd`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
@@ -62,22 +63,22 @@ const Blog = (props) => {
       console.log('gkgkkgkg', e)
 
       const id = e.id
-      const name = e.delname
-      const email = e.delemail
+      const name = e.deleteName
+      const password = e.deletePassword
 
       await axios
-        .delete(`http://localhost:3000/api/commentdelete`, {
+        .delete(`http://localhost:3000/api/commentDelete`, {
           data: {
             id,
-            name: name,
-            email: email,
+            name,
+            password,
           },
         })
         .then((res) => {
           if (res.data === '사용자가 아닙니다.') {
-            setDelerror(res.data)
+            setDeleteError(res.data)
           } else {
-            setDelerror('')
+            setDeleteError('')
             setComments(res.data)
           }
         })
@@ -90,7 +91,8 @@ const Blog = (props) => {
   return (
     <div className={styles.comments}>
       <div>
-        <h1>My Blog</h1>
+        <h1>My Comment</h1>
+        {/* 사용자 등록 */}
         <div>
           <Create />
         </div>
@@ -99,25 +101,7 @@ const Blog = (props) => {
         {/* 작성 부분 */}
         <div className={styles.comments_input}>
           <h1>comment</h1>
-          <input
-            autoFocus
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-            type="text"
-            value={name}
-          />
-          <br />
-          <textarea
-            className={styles.comment_input_area}
-            id="textarea"
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Email address"
-            value={content}
-          ></textarea>
-
-          <button name="commenting" value="Signup" onClick={submitData}>
-            Signup
-          </button>
+          <Comment submitData={submitData} />
           <div>&emsp;{error}</div>
         </div>
 
@@ -125,12 +109,15 @@ const Blog = (props) => {
         <main>
           {comments.map((comment) => (
             <div key={comment.id} className={styles.comments_print}>
+              {/* 사용자 명 */}
               <div className={styles.comments_print_user}>
-                name = {comment.user.name} postId = {comment.postId}
+                name = {comment.Users.name} postId = {comment.postId}
               </div>
+              {/* 작성 날짜 */}
               <div className={styles.comments_print_date}>
                 {comment.createdAt}
               </div>
+              {/* 댓글 내용 */}
               <div className={styles.comments_print_content}>
                 {comment.content}
               </div>
@@ -147,12 +134,12 @@ const Blog = (props) => {
               {/* 삭제 버튼 */}
               <details>
                 <summary>삭제</summary>
-                <Delete commentId={comment.id} dataDelete={dataDelete} />
-                <div>{delerror}</div>
+                <Delete id={comment.id} dataDelete={dataDelete} />
+                <div>{deleteError}</div>
               </details>
+
               {/* 대댓글 버튼 */}
               <Commenting id={comment.id} />
-              <br />
               <br />
             </div>
           ))}
@@ -163,7 +150,7 @@ const Blog = (props) => {
 }
 
 export const getServerSideProps = async () => {
-  const res = await axios.get('http://localhost:3000/api/coPrint')
+  const res = await axios.get('http://localhost:3000/api/commentPrint')
   const comments = await res.data
 
   return {

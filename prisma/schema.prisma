@@ -7,12 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model Comments {
   id         Int          @id @default(autoincrement())
-  name       String       @unique
-  email      String       @unique
-  comments   Comments[]
+  createdAt  DateTime     @default(now())
+  content    String?
+  like       Int          @default(0)
+  authorId   Int
+  postId     Int
+  Users      Users        @relation(fields: [authorId], references: [id])
+  Posts      Posts        @relation(fields: [postId], references: [id])
   InComments InComments[]
+
+  @@index([authorId], name: "authorId")
+  @@index([postId], name: "postId")
+}
+
+model InComments {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  content    String?
+  like       Int      @default(0)
+  authorId   Int
+  commentsId Int
+  Users      Users    @relation(fields: [authorId], references: [id])
+  Comments   Comments @relation(fields: [commentsId], references: [id])
+
+  @@index([authorId], name: "authorId")
+  @@index([commentsId], name: "commentsId")
 }
 
 model Posts {
@@ -21,27 +42,10 @@ model Posts {
   Comments Comments[]
 }
 
-model Comments {
+model Users {
   id         Int          @id @default(autoincrement())
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  content    String?
-  like       Int          @default(0)
-  authorId   Int
-  user       Users?       @relation(fields: [authorId], references: [id])
-  postId     Int
-  post       Posts?       @relation(fields: [postId], references: [id])
+  name       String       @unique
+  password   String
+  Comments   Comments[]
   InComments InComments[]
-}
-
-model InComments {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  content    String?
-  like       Int       @default(0)
-  authorId   Int
-  user       Users?    @relation(fields: [authorId], references: [id])
-  commentsId Int
-  comment    Comments? @relation(fields: [commentsId], references: [id])
 }

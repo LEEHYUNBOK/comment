@@ -1,35 +1,33 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prisma'
 
-// POST /api/post
-// Required fields in body: title, authorEmail
-// Optional fields in body: content
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, content, postId } = req.body
+  const { name, content, postId, password } = req.body
   console.log('body', req.body)
 
-  const users = await prisma.users.findUnique({
+  const users = await prisma.users.findMany({
     where: {
       name,
+      password,
     },
   })
   console.log('users', users)
 
-  if (users !== null) {
+  if (users.length !== 0) {
     const result = await prisma.comments.create({
       data: {
         content: content,
-        user: { connect: { name: name } },
-        post: { connect: { id: postId } },
+        Users: { connect: { name: name } },
+        Posts: { connect: { id: postId } },
       },
     })
 
     const users = await prisma.comments.findMany({
       where: { postId: postId },
-      include: { user: true },
+      include: { Users: true },
     })
     res.json(users)
   } else {

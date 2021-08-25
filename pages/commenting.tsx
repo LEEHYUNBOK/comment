@@ -2,15 +2,12 @@ import styles from '../styles/Home.module.scss'
 import { useState } from 'react'
 import axios from 'axios'
 import Delete from './delete'
+import Comment from './comment'
 
 const Commenting = (props) => {
   const [incomments, setIncomments] = useState([])
-  const [name, setName] = useState('')
-  const [content, setContent] = useState('')
   const [error, setError] = useState('')
-  const [delname, setDelname] = useState('')
-  const [delemail, setDelemail] = useState('')
-  const [delerror, setDelerror] = useState('')
+  const [deleteError, setDeleteError] = useState('')
   const { id } = props
 
   // 대댓글 좋아요 기능
@@ -19,7 +16,7 @@ const Commenting = (props) => {
       const id = e
 
       await axios
-        .put('http://localhost:3000/api/inlike', JSON.stringify(id), {
+        .put('http://localhost:3000/api/inCommentLike', JSON.stringify(id), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => setIncomments(res.data))
@@ -31,9 +28,8 @@ const Commenting = (props) => {
   //대댓글 출력 기능
   const inget = async (props: any) => {
     const id = props
-    const ty = 'in'
     const res = await axios
-      .get('http://localhost:3000/api/incomment', {
+      .get('http://localhost:3000/api/inComment', {
         params: {
           id: id,
         },
@@ -42,16 +38,21 @@ const Commenting = (props) => {
   }
 
   // 대댓글 추가 기능
-  const submitData = async (e: React.SyntheticEvent) => {
+  const submitData = async (e: any) => {
     try {
-      setName('')
-      setContent('')
-      const body = { name, content, id }
+      const name = e.name
+      const content = e.content
+      const password = e.password
+      const body = { name, content, id, password }
 
       await axios
-        .post(`http://localhost:3000/api/incoinput`, JSON.stringify(body), {
-          headers: { 'Content-Type': 'application/json' },
-        })
+        .post(
+          `http://localhost:3000/api/inCommentInput`,
+          JSON.stringify(body),
+          {
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
         .then((res) => {
           if (res.data === '사용자가 아닙니다.') {
             setError(res.data)
@@ -59,7 +60,6 @@ const Commenting = (props) => {
             setIncomments(res.data)
           }
         })
-      console.log('넘어가요~comments')
     } catch (error) {
       setError('실패하였습니다.')
       console.error(error)
@@ -69,34 +69,30 @@ const Commenting = (props) => {
   // 삭제 기능
   const dataDelete = async (e: any) => {
     try {
-      setDelname('')
-      setDelemail('')
       const commentId = props.id
       console.log('lllllll', commentId)
 
       const id = e.id
-      const name = e.delname
-      const email = e.delemail
+      const name = e.deleteName
+      const password = e.deletePassword
 
       await axios
-        .delete(`http://localhost:3000/api/commentdelete`, {
+        .delete(`http://localhost:3000/api/inCommentDelete`, {
           data: {
             commentId,
             id,
-            name: name,
-            email: email,
-            ty: 'in',
+            name,
+            password,
           },
         })
         .then((res) => {
           if (res.data === '사용자가 아닙니다.') {
-            setDelerror(res.data)
+            setDeleteError(res.data)
           } else {
-            setDelerror('')
+            setDeleteError('')
             setIncomments(res.data)
           }
         })
-      console.log('넘어가요~create')
     } catch (error) {
       alert('흑흑...왜 안되지...?')
       console.error(error)
@@ -110,15 +106,19 @@ const Commenting = (props) => {
         <div>
           {incomments.map((incomment) => (
             <div key={incomment.id} className={styles.comments_print}>
+              {/* 사용자 명 */}
               <div className={styles.comments_print_user}>
-                cname = {incomment.user.name} {incomment.id}
+                cname = {incomment.Users.name}
               </div>
+              {/* 작성 날짜 */}
               <div className={styles.comments_print_date}>
                 {incomment.createdAt}
               </div>
+              {/* 댓글 내용 */}
               <div className={styles.comments_print_content}>
                 {incomment.content}
               </div>
+              {/* 좋아요 버튼 */}
               <button
                 name="Like"
                 // onClick={Like(comment.id)}
@@ -130,8 +130,8 @@ const Commenting = (props) => {
               {/* 삭제 버튼 */}
               <details>
                 <summary>삭제</summary>
-                <Delete commentId={incomment.id} dataDelete={dataDelete} />
-                <div>{delerror}</div>
+                <Delete id={incomment.id} dataDelete={dataDelete} />
+                <div>{deleteError}</div>
               </details>
             </div>
           ))}
@@ -139,29 +139,7 @@ const Commenting = (props) => {
 
         {/* 작성 부분 */}
         <div className={styles.comments_input}>
-          <input
-            autoFocus
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-            type="text"
-            value={name}
-          />
-          <br />
-          <textarea
-            className={styles.comment_input_area}
-            id="textarea"
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Email address"
-            value={content}
-          ></textarea>
-          <button
-            name="commenting"
-            disabled={!name || !content}
-            value="Signup"
-            onClick={submitData}
-          >
-            Signup
-          </button>
+          <Comment submitData={submitData} />
           <div>{error}</div>
         </div>
       </details>

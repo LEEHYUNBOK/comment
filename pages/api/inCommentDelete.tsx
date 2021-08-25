@@ -5,10 +5,10 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, password, id } = req.body
+  const { name, password, id, commentId } = req.body
 
   console.log('name + password', name + ' ' + password + ' ' + id)
-  const com = await prisma.comments.findMany({
+  const com = await prisma.inComments.findMany({
     where: {
       id: id,
       Users: {
@@ -17,30 +17,17 @@ export default async function handle(
       },
     },
   })
-  console.log('comcom', com.length)
-
-  const inco = await prisma.inComments.findMany({
-    where: {
-      commentsId: id,
-    },
-  })
+  // console.log('comcom', com[0].commentsId)
 
   if (com.length !== 0) {
-    if (inco.length !== 0) {
-      const result = await prisma.inComments.deleteMany({
-        where: {
-          commentsId: id,
-        },
-      })
-    }
-    const result = await prisma.comments.delete({
+    const result = await prisma.inComments.delete({
       where: {
         id: id,
       },
     })
 
-    const users = await prisma.comments.findMany({
-      where: { postId: 1 },
+    const users = await prisma.inComments.findMany({
+      where: { commentsId: commentId },
       include: { Users: true },
     })
     res.json(users)
