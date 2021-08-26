@@ -7,7 +7,7 @@ import { symbolName } from 'typescript'
 import Delete from './delete'
 import Comment from './comment'
 
-const Blog = (props) => {
+const Comments = (props) => {
   const [comments, setComments] = useState(props.comments)
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
@@ -29,22 +29,21 @@ const Blog = (props) => {
   }
 
   // 댓글 추가 기능
-  const submitData = async (e: any) => {
+  const commentAdd = async (e: any) => {
     try {
       console.log('dadadaddaba', e)
       const postId = 1
-      const password = e.password
-      const name = e.name
-      const content = e.content
-      const body = { name, content, postId, password }
-      console.log('dadadaddaba', body)
+      const addPassword = e.commentAddPassword
+      const addName = e.commentAddName
+      const addContent = e.commentAddContent
+      const body = { addName, addContent, postId, addPassword }
 
       await axios
         .post(`http://localhost:3000/api/commentAdd`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
-          if (res.data === '사용자가 아닙니다.') {
+          if (typeof res.data === 'string') {
             setError(res.data)
           } else {
             setError('')
@@ -75,7 +74,7 @@ const Blog = (props) => {
           },
         })
         .then((res) => {
-          if (res.data === '사용자가 아닙니다.') {
+          if (typeof res.data === 'string') {
             setDeleteError(res.data)
           } else {
             setDeleteError('')
@@ -101,7 +100,7 @@ const Blog = (props) => {
         {/* 작성 부분 */}
         <div className={styles.comments_input}>
           <h1>comment</h1>
-          <Comment submitData={submitData} />
+          <Comment commentAdd={commentAdd} />
           <div>&emsp;{error}</div>
         </div>
 
@@ -158,4 +157,4 @@ export const getServerSideProps = async () => {
   }
 }
 
-export default Blog
+export default Comments

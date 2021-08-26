@@ -2,61 +2,57 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Create = () => {
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
+  const [createUserName, setCreateUserName] = useState('')
+  const [createUserPassword, setCreateUserPassword] = useState('')
+  const [userError, setUserError] = useState('')
 
-  const submitData = async (e: React.SyntheticEvent) => {
+  const createUser = async (e: any) => {
     try {
+      setCreateUserName('')
+      setCreateUserPassword('')
       console.log('submitdate', e)
-      // await axios
-      //   .post('http://localhost:3000/api/bcrypt', JSON.stringify(password), {
-      //     headers: { 'Content-Type': 'application/json' },
-      //   })
-      //   .then((res) => {
-      //     setPassword(res.data)
-      //     console.log('password test' + password + '' + name)
-
-      //     const body = { name, password }
-      //     axios.post(`http://localhost:3000/api/users`, JSON.stringify(body), {
-      //       headers: { 'Content-Type': 'application/json' },
-      //     })
-      //     console.log('넘어가요~create')
-      //   })
-      // console.log('tttt', password)
-
-      const body = { name, password }
-      await axios.post(
-        `http://localhost:3000/api/users`,
-        JSON.stringify(body),
-        {
+      const createNewPassword = e.createUserPassword
+      const createNewName = e.createUserName
+      console.log('icalslssl', createNewPassword + ' ' + createNewName)
+      const body = { createNewName, createNewPassword }
+      await axios
+        .post(`http://localhost:3000/api/users`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
-        }
-      )
+        })
+        .then((res) => {
+          alert(res.data), setUserError(res.data)
+        })
       console.log('넘어가요~create')
     } catch (error) {
-      alert('흑흑...왜 안되지...?')
+      setUserError('실패하였습니다.')
+      alert('실패하였습니다.')
       console.error(error)
     }
   }
 
   return (
-    <form onSubmit={submitData}>
-      <h1>Signup user</h1>
+    <div>
       <input
-        autoFocus
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => setCreateUserName(e.target.value)}
         placeholder="Name"
         type="text"
-        value={name}
+        value={createUserName}
       />
       <input
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="content"
-        type="text"
-        value={password}
+        onChange={(e) => setCreateUserPassword(e.target.value)}
+        placeholder="password"
+        type="password"
+        value={createUserPassword}
       />
-      <input disabled={!name || !password} type="submit" value="Signup" />
-    </form>
+
+      <button
+        name="commenting"
+        value="Signup"
+        onClick={() => createUser({ createUserName, createUserPassword })}
+      >
+        Signup
+      </button>
+    </div>
   )
 }
 

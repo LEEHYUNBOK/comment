@@ -17,7 +17,7 @@ const Delete = (props) => {
       <input
         onChange={(e) => setDeletePassword(e.target.value)}
         placeholder="password"
-        type="text"
+        type="password"
         value={deletePassword}
       />
       <button

@@ -3,41 +3,45 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Comment = (props) => {
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [content, setContent] = useState('')
+  const [commentAddName, setCommentAddName] = useState('')
+  const [commentAddPassword, setCommentAddPassword] = useState('')
+  const [commentAddContent, setCommentAddContent] = useState('')
 
   return (
     <div>
       <input
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => setCommentAddName(e.target.value)}
         placeholder="Name"
         type="text"
-        value={name}
+        value={commentAddName}
       />
       <input
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => setCommentAddPassword(e.target.value)}
         placeholder="password"
-        type="text"
-        value={password}
+        type="password"
+        value={commentAddPassword}
       />
       <br />
       <textarea
         className={styles.comment_input_area}
         id="textarea"
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => setCommentAddContent(e.target.value)}
         placeholder="content"
-        value={content}
+        value={commentAddContent}
       />
 
       <button
         name="commenting"
         value="Signup"
         onClick={() => (
-          props.submitData({ name, content, password }),
-          setContent(''),
-          setName(''),
-          setPassword('')
+          props.commentAdd({
+            commentAddName,
+            commentAddContent,
+            commentAddPassword,
+          }),
+          setCommentAddContent(''),
+          setCommentAddName(''),
+          setCommentAddPassword('')
         )}
       >
         Signup

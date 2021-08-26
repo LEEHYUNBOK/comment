@@ -54,9 +54,10 @@ const Commenting = (props) => {
           }
         )
         .then((res) => {
-          if (res.data === '사용자가 아닙니다.') {
+          if (typeof res.data === 'string') {
             setError(res.data)
           } else {
+            setError('')
             setIncomments(res.data)
           }
         })
@@ -86,7 +87,7 @@ const Commenting = (props) => {
           },
         })
         .then((res) => {
-          if (res.data === '사용자가 아닙니다.') {
+          if (typeof res.data === 'string') {
             setDeleteError(res.data)
           } else {
             setDeleteError('')

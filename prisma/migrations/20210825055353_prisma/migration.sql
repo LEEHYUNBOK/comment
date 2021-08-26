@@ -2,7 +2,6 @@
 CREATE TABLE `Comments` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
     `content` VARCHAR(191),
     `like` INTEGER NOT NULL DEFAULT 0,
     `authorId` INTEGER NOT NULL,
@@ -17,7 +16,6 @@ CREATE TABLE `Comments` (
 CREATE TABLE `InComments` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
     `content` VARCHAR(191),
     `like` INTEGER NOT NULL DEFAULT 0,
     `authorId` INTEGER NOT NULL,
