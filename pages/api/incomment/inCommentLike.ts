@@ -1,22 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import prisma from '../../../lib/prisma'
 
-export default async function handle(
+export default async function InCommentLike(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.body
+  const { commentLikeId } = req.body
 
   const likeNum = await prisma.inComments.findUnique({
     where: {
-      id,
+      id: commentLikeId,
     },
   })
 
   const like = likeNum.like + 1
 
   const result = await prisma.inComments.update({
-    where: { id: id },
+    where: { id: commentLikeId },
     data: { like: like },
   })
   const user_id = result.commentsId

@@ -10,10 +10,8 @@ const Create = () => {
     try {
       setCreateUserName('')
       setCreateUserPassword('')
-      console.log('submitdate', e)
       const createNewPassword = e.createUserPassword
       const createNewName = e.createUserName
-      console.log('icalslssl', createNewPassword + ' ' + createNewName)
       const body = { createNewName, createNewPassword }
       await axios
         .post(`http://localhost:3000/api/users`, JSON.stringify(body), {

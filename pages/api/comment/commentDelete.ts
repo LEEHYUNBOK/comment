@@ -1,19 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import prisma from '../../../lib/prisma'
 import { compare } from 'bcryptjs'
 
-export default async function handle(
+export default async function CommentDelete(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, password, id } = req.body
+  const { deleteName, deletePassword, deleteId } = req.body
 
-  console.log('name + password', name + ' ' + password + ' ' + id)
+  console.log(
+    'name + password',
+    deleteName + ' ' + deletePassword + ' ' + deleteId
+  )
   const deleteComment = await prisma.comments.findMany({
     where: {
-      id: id,
+      id: deleteId,
       Users: {
-        name: name,
+        name: deleteName,
       },
     },
     include: { Users: true },
@@ -22,22 +25,24 @@ export default async function handle(
 
   const inco = await prisma.inComments.findMany({
     where: {
-      commentsId: id,
+      commentsId: deleteId,
     },
   })
 
   if (deleteComment.length !== 0) {
-    if ((await compare(password, deleteComment[0].Users.password)) === true) {
+    if (
+      (await compare(deletePassword, deleteComment[0].Users.password)) === true
+    ) {
       if (inco.length !== 0) {
         const result = await prisma.inComments.deleteMany({
           where: {
-            commentsId: id,
+            commentsId: deleteId,
           },
         })
       }
       const result = await prisma.comments.delete({
         where: {
-          id: id,
+          id: deleteId,
         },
       })
 

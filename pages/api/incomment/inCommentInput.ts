@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import prisma from '../../../lib/prisma'
 import { compare } from 'bcryptjs'
 
-export default async function handle(
+export default async function InCommentInput(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, content, id, password } = req.body
+  const { addName, addContent, id, addPassword } = req.body
   const user = await prisma.users.findUnique({
     where: {
-      name,
+      name: addName,
     },
   })
 
@@ -17,11 +17,11 @@ export default async function handle(
 
   if (user !== null) {
     // 만약 user의 password와 입력 받은 password가 같다면
-    if ((await compare(password, user.password)) === true) {
+    if ((await compare(addPassword, user.password)) === true) {
       const commentCreate = await prisma.inComments.create({
         data: {
-          content: content,
-          Users: { connect: { name: name } },
+          content: addContent,
+          Users: { connect: { name: addName } },
           Comments: { connect: { id: id } },
         },
       })

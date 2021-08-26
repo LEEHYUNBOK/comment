@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import prisma from '../../../lib/prisma'
 import { compare } from 'bcryptjs'
 
-export default async function handle(
+export default async function CommentAdd(
   req: NextApiRequest,
   res: NextApiResponse
 ) {

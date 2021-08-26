@@ -2,41 +2,46 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const Delete = (props) => {
-  const [deleteName, setDeleteName] = useState('')
-  const [deletePassword, setDeletePassword] = useState('')
-  const { id } = props
+  const [commentDeleteName, setCommentDeleteName] = useState('')
+  const [commentDeletePassword, setCommentDeletePassword] = useState('')
+  const { commentDeleteId } = props
 
   return (
-    <div>
-      <input
-        onChange={(e) => setDeleteName(e.target.value)}
-        placeholder="Name"
-        type="text"
-        value={deleteName}
-      />
-      <input
-        onChange={(e) => setDeletePassword(e.target.value)}
-        placeholder="password"
-        type="password"
-        value={deletePassword}
-      />
-      <button
-        name="commenting"
-        disabled={!deleteName || !deletePassword}
-        value="Signup"
-        onClick={() => (
-          props.dataDelete({
-            id,
-            deleteName,
-            deletePassword,
-          }),
-          setDeleteName(''),
-          setDeletePassword('')
-        )}
-      >
-        Signup
-      </button>
-    </div>
+    <details>
+      <summary>삭제</summary>
+      <div>
+        <input
+          onChange={(e) => setCommentDeleteName(e.target.value)}
+          placeholder="Name"
+          type="text"
+          value={commentDeleteName}
+        />
+        <input
+          onChange={(e) => setCommentDeletePassword(e.target.value)}
+          placeholder="password"
+          type="password"
+          value={commentDeletePassword}
+        />
+        <button
+          name="commenting"
+          disabled={!commentDeleteName || !commentDeletePassword}
+          value="Signup"
+          onClick={() => (
+            props.commentDelete({
+              commentDeleteId,
+              commentDeleteName,
+              commentDeletePassword,
+            }),
+            setCommentDeleteName(''),
+            setCommentDeletePassword('')
+          )}
+        >
+          Signup
+        </button>
+        {/* &emsp; */}
+        <div>{props.deleteError}</div>
+      </div>
+    </details>
   )
 }
 

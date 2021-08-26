@@ -3,22 +3,27 @@ import { useState } from 'react'
 import axios from 'axios'
 import Delete from './delete'
 import Comment from './comment'
+import Like from './like'
+import CommentContent from './content'
 
-const Commenting = (props) => {
+const InComment = (props) => {
   const [incomments, setIncomments] = useState([])
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const { id } = props
 
   // 대댓글 좋아요 기능
-  const Like = async (e: any) => {
+  const coommentlike = async (e: any) => {
     try {
-      const id = e
-
+      const commentLikeId = e
       await axios
-        .put('http://localhost:3000/api/inCommentLike', JSON.stringify(id), {
-          headers: { 'Content-Type': 'application/json' },
-        })
+        .put(
+          'http://localhost:3000/api/incomment/inCommentLike',
+          JSON.stringify(commentLikeId),
+          {
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
         .then((res) => setIncomments(res.data))
     } catch (error) {
       console.error(error)
@@ -29,7 +34,7 @@ const Commenting = (props) => {
   const inget = async (props: any) => {
     const id = props
     const res = await axios
-      .get('http://localhost:3000/api/inComment', {
+      .get('http://localhost:3000/api/incomment/inComment', {
         params: {
           id: id,
         },
@@ -38,16 +43,16 @@ const Commenting = (props) => {
   }
 
   // 대댓글 추가 기능
-  const submitData = async (e: any) => {
+  const commentAdd = async (e: any) => {
     try {
-      const name = e.name
-      const content = e.content
-      const password = e.password
-      const body = { name, content, id, password }
+      const addName = e.commentAddName
+      const addContent = e.commentAddContent
+      const addPassword = e.commentAddPassword
+      const body = { addName, addContent, id, addPassword }
 
       await axios
         .post(
-          `http://localhost:3000/api/inCommentInput`,
+          `http://localhost:3000/api/incomment/inCommentInput`,
           JSON.stringify(body),
           {
             headers: { 'Content-Type': 'application/json' },
@@ -68,22 +73,22 @@ const Commenting = (props) => {
   }
 
   // 삭제 기능
-  const dataDelete = async (e: any) => {
+  const inCommentDelete = async (e: any) => {
     try {
       const commentId = props.id
-      console.log('lllllll', commentId)
+      console.log('lllllll', e)
 
-      const id = e.id
-      const name = e.deleteName
-      const password = e.deletePassword
+      const id = e.commentDeleteId
+      const deleteName = e.commentDeleteName
+      const deletePassword = e.commentDeletePassword
 
       await axios
-        .delete(`http://localhost:3000/api/inCommentDelete`, {
+        .delete(`http://localhost:3000/api/incomment/inCommentDelete`, {
           data: {
             commentId,
-            id,
-            name,
-            password,
+            id: id,
+            name: deleteName,
+            password: deletePassword,
           },
         })
         .then((res) => {
@@ -107,6 +112,7 @@ const Commenting = (props) => {
         <div>
           {incomments.map((incomment) => (
             <div key={incomment.id} className={styles.comments_print}>
+              {/* 댓글 내용 */}
               {/* 사용자 명 */}
               <div className={styles.comments_print_user}>
                 cname = {incomment.Users.name}
@@ -119,32 +125,28 @@ const Commenting = (props) => {
               <div className={styles.comments_print_content}>
                 {incomment.content}
               </div>
+              {/* <CommentContent comment={incomment} /> */}
               {/* 좋아요 버튼 */}
-              <button
-                name="Like"
-                // onClick={Like(comment.id)}
-                onClick={() => Like({ id: incomment.id })}
-              >
-                Like {incomment.like}
-              </button>
+              <Like
+                coommentlike={coommentlike}
+                commentId={incomment.id}
+                commentLike={incomment.like}
+              />
 
               {/* 삭제 버튼 */}
-              <details>
-                <summary>삭제</summary>
-                <Delete id={incomment.id} dataDelete={dataDelete} />
-                <div>{deleteError}</div>
-              </details>
+              <Delete
+                commentDeleteId={incomment.id}
+                commentDelete={inCommentDelete}
+                deleteError={deleteError}
+              />
             </div>
           ))}
         </div>
 
         {/* 작성 부분 */}
-        <div className={styles.comments_input}>
-          <Comment submitData={submitData} />
-          <div>{error}</div>
-        </div>
+        <Comment commentAdd={commentAdd} error={error} />
       </details>
     </div>
   )
 }
-export default Commenting
+export default InComment

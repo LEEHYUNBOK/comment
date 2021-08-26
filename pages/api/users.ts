@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prisma'
 import { hash } from 'bcryptjs'
-export default async function handle(
+export default async function UserCreate(
   req: NextApiRequest,
   res: NextApiResponse
 ) {

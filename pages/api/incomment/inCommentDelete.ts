@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import prisma from '../../../lib/prisma'
 import { compare } from 'bcryptjs'
 
-export default async function handle(
+export default async function InCommentDelete(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log('body,', req.body)
+
   const { name, password, id, commentId } = req.body
 
   console.log('name + password', name + ' ' + password + ' ' + id)

@@ -1,6 +1,6 @@
-import prisma from '../../lib/prisma'
+import prisma from '../../../lib/prisma'
 
-export default async function handle(req, res) {
+export default async function InComment(req, res) {
   const { id } = req.query
 
   const users = await prisma.inComments.findMany({
