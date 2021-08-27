@@ -4,7 +4,7 @@ import axios from 'axios'
 import Delete from './delete'
 import Comment from './comment'
 import Like from './like'
-import CommentContent from './content'
+import CommentContent from './commentcontent'
 
 const InComment = (props) => {
   const [incomments, setIncomments] = useState([])
@@ -31,10 +31,10 @@ const InComment = (props) => {
   }
 
   //대댓글 출력 기능
-  const inget = async (props: any) => {
+  const inCommentPrint = async (props: any) => {
     const id = props
     const res = await axios
-      .get('http://localhost:3000/api/incomment/inComment', {
+      .get('http://localhost:3000/api/incomment/inCommentPrint', {
         params: {
           id: id,
         },
@@ -108,7 +108,7 @@ const InComment = (props) => {
   return (
     <div className={styles.inComments_print}>
       <details>
-        <summary onClick={() => inget(id)}>더보기</summary>
+        <summary onClick={() => inCommentPrint(id)}>더보기</summary>
         <div>
           {incomments.map((incomment) => (
             <div key={incomment.id} className={styles.comments_print}>

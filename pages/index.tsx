@@ -7,7 +7,8 @@ import { symbolName } from 'typescript'
 import Delete from './delete'
 import Comment from './comment'
 import Like from './like'
-import CommentContent from './content'
+import CommentContent from './commentcontent'
+import CommentPrint from './api/comment/commentPrint'
 
 const Comments = (props) => {
   const [comments, setComments] = useState(props.comments)
