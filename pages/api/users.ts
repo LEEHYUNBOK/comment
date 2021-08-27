@@ -10,7 +10,7 @@ export default async function UserCreate(
   const hashPassword: any = await hash(createNewPassword, 10)
   console.log('hashPassword', hashPassword)
 
-  const result = await prisma.users.create({
+  const result = await prisma.commentUsers.create({
     data: {
       name: createNewName,
       password: hashPassword,

@@ -7,7 +7,7 @@ export default async function InCommentInput(
   res: NextApiResponse
 ) {
   const { addName, addContent, id, addPassword } = req.body
-  const user = await prisma.users.findUnique({
+  const user = await prisma.commentUsers.findUnique({
     where: {
       name: addName,
     },
@@ -18,17 +18,17 @@ export default async function InCommentInput(
   if (user !== null) {
     // 만약 user의 password와 입력 받은 password가 같다면
     if ((await compare(addPassword, user.password)) === true) {
-      const commentCreate = await prisma.inComments.create({
+      const commentCreate = await prisma.commentsIn.create({
         data: {
           content: addContent,
-          Users: { connect: { name: addName } },
-          Comments: { connect: { id: id } },
+          commentUsers: { connect: { name: addName } },
+          comments: { connect: { id: id } },
         },
       })
 
-      const comments = await prisma.inComments.findMany({
+      const comments = await prisma.commentsIn.findMany({
         where: { commentsId: id },
-        include: { Users: true },
+        include: { commentUsers: true },
       })
       res.json(comments)
     } else {

@@ -15,15 +15,15 @@ export default async function CommentDelete(
   const deleteComment = await prisma.comments.findMany({
     where: {
       id: deleteId,
-      Users: {
+      commentUsers: {
         name: deleteName,
       },
     },
-    include: { Users: true },
+    include: { commentUsers: true },
   })
   console.log('comcom', deleteComment.length)
 
-  const inco = await prisma.inComments.findMany({
+  const inco = await prisma.commentsIn.findMany({
     where: {
       commentsId: deleteId,
     },
@@ -31,10 +31,13 @@ export default async function CommentDelete(
 
   if (deleteComment.length !== 0) {
     if (
-      (await compare(deletePassword, deleteComment[0].Users.password)) === true
+      (await compare(
+        deletePassword,
+        deleteComment[0].commentUsers.password
+      )) === true
     ) {
       if (inco.length !== 0) {
-        const result = await prisma.inComments.deleteMany({
+        const result = await prisma.commentsIn.deleteMany({
           where: {
             commentsId: deleteId,
           },
@@ -48,7 +51,7 @@ export default async function CommentDelete(
 
       const users = await prisma.comments.findMany({
         where: { postId: 1 },
-        include: { Users: true },
+        include: { commentUsers: true },
       })
       res.json(users)
     } else {

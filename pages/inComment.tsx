@@ -113,19 +113,23 @@ const InComment = (props) => {
           {incomments.map((incomment) => (
             <div key={incomment.id} className={styles.comments_print}>
               {/* 댓글 내용 */}
+
               {/* 사용자 명 */}
               <div className={styles.comments_print_user}>
-                cname = {incomment.Users.name}
+                cname = {incomment.commentUsers.name}
               </div>
+
               {/* 작성 날짜 */}
               <div className={styles.comments_print_date}>
                 {incomment.createdAt}
               </div>
+
               {/* 댓글 내용 */}
               <div className={styles.comments_print_content}>
                 {incomment.content}
               </div>
               {/* <CommentContent comment={incomment} /> */}
+
               {/* 좋아요 버튼 */}
               <Like
                 coommentlike={coommentlike}

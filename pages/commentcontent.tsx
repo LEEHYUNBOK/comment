@@ -6,7 +6,7 @@ const CommentContent = (props) => {
   return (
     <div>
       <div className={styles.comments_print_user}>
-        name = {comment.Users.name} postId = {comment.postId}
+        name = {comment.commentUsers.name} postId = {comment.postId}
       </div>
       {/* 작성 날짜 */}
       <div className={styles.comments_print_date}> {comment.createdAt} </div>

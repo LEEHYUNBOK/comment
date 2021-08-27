@@ -8,27 +8,28 @@ export default async function CommentAdd(
 ) {
   const { addName, addContent, postId, addPassword } = req.body
 
-  const user = await prisma.users.findUnique({
+  const user = await prisma.commentUsers.findUnique({
     where: {
       name: addName,
     },
   })
+  console.log('icanican', req.body)
 
-  // console.log('users', user)
+  console.log('users', user)
 
   if (user !== null) {
     if ((await compare(addPassword, user.password)) === true) {
       const commentCreate = await prisma.comments.create({
         data: {
           content: addContent,
-          Users: { connect: { name: addName } },
-          Posts: { connect: { id: postId } },
+          commentUsers: { connect: { name: addName } },
+          posts: { connect: { id: postId } },
         },
       })
 
       const comments = await prisma.comments.findMany({
         where: { postId: postId },
-        include: { Users: true },
+        include: { commentUsers: true },
       })
       console.log('acadapamiitt', comments)
 

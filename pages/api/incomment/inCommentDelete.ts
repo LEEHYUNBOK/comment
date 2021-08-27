@@ -11,29 +11,31 @@ export default async function InCommentDelete(
   const { name, password, id, commentId } = req.body
 
   console.log('name + password', name + ' ' + password + ' ' + id)
-  const deleteComment = await prisma.inComments.findMany({
+  const deleteComment = await prisma.commentsIn.findMany({
     where: {
       id: id,
-      Users: {
+      commentUsers: {
         name: name,
       },
     },
-    include: { Users: true },
+    include: { commentUsers: true },
   })
 
   // console.log('comcom', com[0].commentsId)
 
   if (deleteComment.length !== 0) {
-    if ((await compare(password, deleteComment[0].Users.password)) === true) {
-      const result = await prisma.inComments.delete({
+    if (
+      (await compare(password, deleteComment[0].commentUsers.password)) === true
+    ) {
+      const result = await prisma.commentsIn.delete({
         where: {
           id: id,
         },
       })
 
-      const users = await prisma.inComments.findMany({
+      const users = await prisma.commentsIn.findMany({
         where: { commentsId: commentId },
-        include: { Users: true },
+        include: { commentUsers: true },
       })
       res.json(users)
     } else {

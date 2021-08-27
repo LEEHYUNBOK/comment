@@ -7,45 +7,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Comments {
-  id         Int          @id @default(autoincrement())
-  createdAt  DateTime     @default(now())
-  content    String?
-  like       Int          @default(0)
-  authorId   Int
-  postId     Int
-  Users      Users        @relation(fields: [authorId], references: [id])
-  Posts      Posts        @relation(fields: [postId], references: [id])
-  InComments InComments[]
-
-  @@index([authorId], name: "authorId")
-  @@index([postId], name: "postId")
-}
-
-model InComments {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  content    String?
-  like       Int      @default(0)
-  authorId   Int
-  commentsId Int
-  Users      Users    @relation(fields: [authorId], references: [id])
-  Comments   Comments @relation(fields: [commentsId], references: [id])
+model commentsIn {
+  id           Int          @id @default(autoincrement())
+  createdAt    DateTime     @default(now())
+  content      String?
+  like         Int          @default(0)
+  authorId     Int
+  commentsId   Int
+  commentUsers commentUsers @relation(fields: [authorId], references: [id])
+  comments     comments     @relation(fields: [commentsId], references: [id])
 
   @@index([authorId], name: "authorId")
   @@index([commentsId], name: "commentsId")
 }
 
-model Posts {
-  id       Int        @id @default(autoincrement())
-  name     String     @unique
-  Comments Comments[]
-}
-
-model Users {
+model commentUsers {
   id         Int          @id @default(autoincrement())
   name       String       @unique
   password   String
-  Comments   Comments[]
-  InComments InComments[]
+  comments   comments[]
+  commentsIn commentsIn[]
+}
+
+model comments {
+  id           Int          @id @default(autoincrement())
+  createdAt    DateTime     @default(now())
+  content      String?
+  like         Int          @default(0)
+  authorId     Int
+  postId       Int
+  commentUsers commentUsers @relation(fields: [authorId], references: [id])
+  posts        posts        @relation(fields: [postId], references: [id])
+  commentsIn   commentsIn[]
+
+  @@index([authorId], name: "authorId")
+  @@index([postId], name: "postId")
+}
+
+model posts {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  comments comments[]
 }

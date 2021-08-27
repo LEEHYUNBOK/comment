@@ -7,7 +7,7 @@ export default async function InCommentLike(
 ) {
   const { commentLikeId } = req.body
 
-  const likeNum = await prisma.inComments.findUnique({
+  const likeNum = await prisma.commentsIn.findUnique({
     where: {
       id: commentLikeId,
     },
@@ -15,15 +15,15 @@ export default async function InCommentLike(
 
   const like = likeNum.like + 1
 
-  const result = await prisma.inComments.update({
+  const result = await prisma.commentsIn.update({
     where: { id: commentLikeId },
     data: { like: like },
   })
   const user_id = result.commentsId
 
-  const users = await prisma.inComments.findMany({
+  const users = await prisma.commentsIn.findMany({
     where: { commentsId: Number(user_id) },
-    include: { Users: true },
+    include: { commentUsers: true },
   })
   res.json(users)
 }

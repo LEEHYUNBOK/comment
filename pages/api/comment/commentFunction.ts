@@ -10,7 +10,7 @@ export default async function commentFunction(req, res) {
   }
   const users = await prisma.comments.findMany({
     where: { postId: 1 },
-    include: { Users: true },
+    include: { commentUsers: true },
   })
 
   res.json(users)
