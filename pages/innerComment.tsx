@@ -11,10 +11,11 @@ const InnerComment = (props: any) => {
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const { commentId } = props
+  const innerCommentURL = '/api/comments/innerComment/'
 
   //대댓글 출력 기능
   const innerCommentPrint = async () => {
-    const res = await axios.get('/api/innerComment/innerCommentPrint', {
+    const res = await axios.get(innerCommentURL + 'innerCommentPrint', {
       params: {
         id: commentId,
       },
@@ -28,7 +29,7 @@ const InnerComment = (props: any) => {
       const commentLikeId = e
       await axios
         .put(
-          '/api/innerComment/innerCommentLike',
+          innerCommentURL + 'innerCommentLike',
           JSON.stringify(commentLikeId),
           {
             headers: { 'Content-Type': 'application/json' },
@@ -49,7 +50,7 @@ const InnerComment = (props: any) => {
       const body = { addName, addContent, commentId, addPassword }
 
       await axios
-        .post(`/api/innerComment/innerCommentAdd`, JSON.stringify(body), {
+        .post(innerCommentURL + `innerCommentAdd`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
@@ -77,7 +78,7 @@ const InnerComment = (props: any) => {
       const deletePassword = e.commentDeletePassword
 
       await axios
-        .delete(`/api/innerComment/innerCommentDelete`, {
+        .delete(innerCommentURL + `innerCommentDelete`, {
           data: {
             commentId,
             id: id,

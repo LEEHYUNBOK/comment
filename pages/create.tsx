@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import axios from 'axios'
-import UserCreate from './api/users'
 
 const Create = () => {
   const [createUserName, setCreateUserName] = useState('')
@@ -15,7 +14,7 @@ const Create = () => {
       const createNewName = e.createUserName
       const body = { createNewName, createNewPassword }
       await axios
-        .post(`/api/users`, JSON.stringify(body), {
+        .post(`/api/comments/users`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {

@@ -7,18 +7,18 @@ import Delete from './delete'
 import CommentAdd from './commentAdd'
 import Like from './like'
 import CommentContent from './commentcontent'
-import CommentPrint from './api/comment/commentPrint'
 
 const Comments = (props: any) => {
   const [comments, setComments] = useState([])
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const postId = '1'
+  const commentURL = '/api/comments/comment/'
 
   // 댓글 출력 기능
   const commentPrint = async () => {
     try {
-      const res = await axios.get('/api/comment/commentPrint', {
+      const res = await axios.get(commentURL + 'commentPrint', {
         params: {
           postId: postId,
         },
@@ -39,7 +39,7 @@ const Comments = (props: any) => {
       const { commentLikeId } = e
       const body = { commentLikeId, postId }
       await axios
-        .put('/api/comment/commentLike', JSON.stringify(body), {
+        .put(commentURL + 'commentLike', JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => commentPrint())
@@ -58,7 +58,7 @@ const Comments = (props: any) => {
       const body = { addName, addContent, postId, addPassword }
 
       await axios
-        .post(`/api/comment/commentAdd`, JSON.stringify(body), {
+        .post(commentURL + `commentAdd`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
@@ -83,7 +83,7 @@ const Comments = (props: any) => {
       const deletePassword = e.commentDeletePassword
 
       await axios
-        .delete(`/api/comment/commentDelete`, {
+        .delete(commentURL + `commentDelete`, {
           data: {
             deleteId,
             deleteName,
