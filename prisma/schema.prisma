@@ -7,10 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model commentUsers {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  password      String
+  comments      comments[]
+  commentsInner commentsInner[]
+}
+
+model comments {
+  id            Int             @id @default(autoincrement())
+  createdAt     DateTime        @default(now())
+  content       String?         @db.LongText
+  like          Int             @default(0)
+  authorId      Int
+  postId        String          @db.VarChar(24)
+  commentUsers  commentUsers    @relation(fields: [authorId], references: [id])
+  posts         posts           @relation(fields: [postId], references: [id])
+  commentsInner commentsInner[]
+
+  @@index([authorId], name: "authorId")
+  @@index([postId], name: "postId")
+}
+
 model commentsInner {
   id           Int          @id @default(autoincrement())
   createdAt    DateTime     @default(now())
-  content      String?
+  content      String?      @db.LongText
   like         Int          @default(0)
   authorId     Int
   commentsId   Int
@@ -21,31 +44,8 @@ model commentsInner {
   @@index([commentsId], name: "commentsId")
 }
 
-model commentUsers {
-  id         Int          @id @default(autoincrement())
-  name       String       @unique
-  password   String
-  comments   comments[]
-  commentsInner commentsInner[]
-}
-
-model comments {
-  id           Int          @id @default(autoincrement())
-  createdAt    DateTime     @default(now())
-  content      String?
-  like         Int          @default(0)
-  authorId     Int
-  postId       String       @db.VarChar(24)
-  commentUsers commentUsers @relation(fields: [authorId], references: [id])
-  posts        posts        @relation(fields: [postId], references: [id])
-  commentsInner   commentsInner[]
-
-  @@index([authorId], name: "authorId")
-  @@index([postId], name: "postId")
-}
-
 model posts {
-  id                     String          @id @db.VarChar(24)
+  id       String     @id @db.VarChar(24)
   name     String     @unique
   comments comments[]
 }

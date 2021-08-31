@@ -26,6 +26,7 @@
 }
 .innerComments_print {
   padding: 0 5% 0 0;
+  word-break: break-all;
 }
 
 .comments_print_user {
@@ -41,4 +42,5 @@
   font-size: x-large;
   font-weight: lighter;
   padding: 1% 0 1% 0;
+  word-break: break-all;
 }

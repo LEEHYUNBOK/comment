@@ -26,7 +26,7 @@ CREATE TABLE `commentUsers` (
 CREATE TABLE `comments` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `content` VARCHAR(191),
+    `content` LONGTEXT,
     `like` INTEGER NOT NULL DEFAULT 0,
     `authorId` INTEGER NOT NULL,
     `postId` VARCHAR(24) NOT NULL,
@@ -36,14 +36,14 @@ CREATE TABLE `comments` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
--- -- CreateTable
--- CREATE TABLE `posts` (
---     `id` VARCHAR(24) NOT NULL,
---     `name` VARCHAR(191) NOT NULL,
+-- CreateTable
+CREATE TABLE `posts` (
+    `id` VARCHAR(24) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
 
---     UNIQUE INDEX `posts.name_unique`(`name`),
---     PRIMARY KEY (`id`)
--- ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    UNIQUE INDEX `posts.name_unique`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `commentsInner` ADD FOREIGN KEY (`authorId`) REFERENCES `commentUsers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
