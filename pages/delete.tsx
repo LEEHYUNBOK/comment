@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const Delete = (props) => {
+const Delete = (props: any) => {
   const [commentDeleteName, setCommentDeleteName] = useState('')
   const [commentDeletePassword, setCommentDeletePassword] = useState('')
   const { commentDeleteId } = props

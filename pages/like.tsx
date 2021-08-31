@@ -1,6 +1,6 @@
-import styles from '../styles/Home.module.scss'
+import styles from './Home.module.css'
 
-const Like = (props) => {
+const Like = (props: any) => {
   const id = props.commentId
   const like = props.commentLike
   return (
@@ -8,7 +8,7 @@ const Like = (props) => {
       <button
         name="Like"
         // onClick={Like(comment.id)}
-        onClick={() => props.coommentlike({ commentLikeId: id })}
+        onClick={() => props.commentlike({ commentLikeId: id })}
       >
         Like {like}
       </button>

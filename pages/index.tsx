@@ -1,33 +1,48 @@
-import styles from '../styles/Home.module.scss'
-import { useState } from 'react'
+import styles from './Home.module.css'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Create from './create'
-import InComment from './inComment'
-import { symbolName } from 'typescript'
+import InnerComment from './innerComment'
 import Delete from './delete'
-import Comment from './comment'
+import CommentAdd from './commentAdd'
 import Like from './like'
 import CommentContent from './commentcontent'
 import CommentPrint from './api/comment/commentPrint'
 
-const Comments = (props) => {
-  const [comments, setComments] = useState(props.comments)
+const Comments = (props: any) => {
+  const [comments, setComments] = useState([])
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
+  const postId = '1'
+
+  // 댓글 출력 기능
+  const commentPrint = async () => {
+    try {
+      const res = await axios.get('/api/comment/commentPrint', {
+        params: {
+          postId: postId,
+        },
+      })
+      setComments(res.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    commentPrint()
+  }, [])
 
   // 좋아요 기능
-  const coommentlike = async (e: any) => {
+  const commentlike = async (e: any) => {
     try {
-      const commentLikeId = e
+      const { commentLikeId } = e
+      const body = { commentLikeId, postId }
       await axios
-        .put(
-          'http://localhost:3000/api/comment/commentLike',
-          JSON.stringify(commentLikeId),
-          {
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
-        .then((res) => setComments(res.data))
+        .put('/api/comment/commentLike', JSON.stringify(body), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => commentPrint())
     } catch (error) {
       console.error(error)
     }
@@ -36,7 +51,6 @@ const Comments = (props) => {
   // 댓글 추가 기능
   const commentAdd = async (e: any) => {
     try {
-      const postId = 1
       const addPassword = e.commentAddPassword
       const addName = e.commentAddName
       const addContent = e.commentAddContent
@@ -44,19 +58,15 @@ const Comments = (props) => {
       const body = { addName, addContent, postId, addPassword }
 
       await axios
-        .post(
-          `http://localhost:3000/api/comment/commentAdd`,
-          JSON.stringify(body),
-          {
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
+        .post(`/api/comment/commentAdd`, JSON.stringify(body), {
+          headers: { 'Content-Type': 'application/json' },
+        })
         .then((res) => {
           if (typeof res.data === 'string') {
             setError(res.data)
           } else {
             setError('')
-            setComments(res.data)
+            commentPrint()
           }
         })
     } catch (error) {
@@ -73,11 +83,12 @@ const Comments = (props) => {
       const deletePassword = e.commentDeletePassword
 
       await axios
-        .delete(`http://localhost:3000/api/comment/commentDelete`, {
+        .delete(`/api/comment/commentDelete`, {
           data: {
             deleteId,
             deleteName,
             deletePassword,
+            postId,
           },
         })
         .then((res) => {
@@ -85,11 +96,11 @@ const Comments = (props) => {
             setDeleteError(res.data)
           } else {
             setDeleteError('')
-            setComments(res.data)
+            commentPrint()
           }
         })
     } catch (error) {
-      alert('흑흑...왜 안되지...?')
+      alert('실패하였습니다.')
       console.error(error)
     }
   }
@@ -97,12 +108,13 @@ const Comments = (props) => {
   return (
     <div className={styles.comments}>
       <h1>My Comment</h1>
+
       {/* 사용자 등록 */}
       <Create />
-
       <br />
+
       {/* 작성 부분 */}
-      <Comment commentAdd={commentAdd} error={error} />
+      <CommentAdd commentAdd={commentAdd} error={error} />
 
       {/* comments 목록 부분 */}
       {comments.map((comment) => (
@@ -112,7 +124,7 @@ const Comments = (props) => {
 
           {/* 좋아요 버튼 */}
           <Like
-            coommentlike={coommentlike}
+            commentlike={commentlike}
             commentId={comment.id}
             commentLike={comment.like}
           />
@@ -125,21 +137,12 @@ const Comments = (props) => {
           />
 
           {/* 대댓글 버튼 */}
-          <InComment id={comment.id} />
+          <InnerComment commentId={comment.id} />
           <br />
         </div>
       ))}
     </div>
   )
-}
-
-export const getServerSideProps = async () => {
-  const res = await axios.get('http://localhost:3000/api/comment/commentPrint')
-  const comments = await res.data
-
-  return {
-    props: { comments },
-  }
 }
 
 export default Comments

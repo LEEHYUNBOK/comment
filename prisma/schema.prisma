@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model commentsIn {
+model commentsInner {
   id           Int          @id @default(autoincrement())
   createdAt    DateTime     @default(now())
   content      String?
@@ -26,7 +26,7 @@ model commentUsers {
   name       String       @unique
   password   String
   comments   comments[]
-  commentsIn commentsIn[]
+  commentsInner commentsInner[]
 }
 
 model comments {
@@ -35,17 +35,17 @@ model comments {
   content      String?
   like         Int          @default(0)
   authorId     Int
-  postId       Int
+  postId       String       @db.VarChar(24)
   commentUsers commentUsers @relation(fields: [authorId], references: [id])
   posts        posts        @relation(fields: [postId], references: [id])
-  commentsIn   commentsIn[]
+  commentsInner   commentsInner[]
 
   @@index([authorId], name: "authorId")
   @@index([postId], name: "postId")
 }
 
 model posts {
-  id       Int        @id @default(autoincrement())
+  id                     String          @id @db.VarChar(24)
   name     String     @unique
   comments comments[]
 }

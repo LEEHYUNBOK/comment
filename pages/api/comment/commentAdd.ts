@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../lib/prisma'
+import prisma from '../../lib/prisma'
 import { compare } from 'bcryptjs'
 
 export default async function CommentAdd(
@@ -13,9 +13,9 @@ export default async function CommentAdd(
       name: addName,
     },
   })
-  console.log('icanican', req.body)
+  // console.log('icanican', req.body)
 
-  console.log('users', user)
+  // console.log('users', user)
 
   if (user !== null) {
     if ((await compare(addPassword, user.password)) === true) {
@@ -27,13 +27,7 @@ export default async function CommentAdd(
         },
       })
 
-      const comments = await prisma.comments.findMany({
-        where: { postId: postId },
-        include: { commentUsers: true },
-      })
-      console.log('acadapamiitt', comments)
-
-      res.json(comments)
+      res.json(commentCreate)
     } else {
       res.status(200).json('비밀번호가 다릅니다.')
     }

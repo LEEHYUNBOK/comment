@@ -1,8 +1,8 @@
-import styles from '../styles/Home.module.scss'
+import styles from './Home.module.css'
 import { useState } from 'react'
 import axios from 'axios'
 
-const Comment = (props) => {
+const CommentAdd = (props: any) => {
   const [commentAddName, setCommentAddName] = useState('')
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
@@ -53,4 +53,4 @@ const Comment = (props) => {
   )
 }
 
-export default Comment
+export default CommentAdd

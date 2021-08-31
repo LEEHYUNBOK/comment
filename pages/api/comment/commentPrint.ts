@@ -1,8 +1,9 @@
-import prisma from '../../../lib/prisma'
+import prisma from '../../lib/prisma'
 
 export default async function CommentPrint(req, res) {
+  const { postId } = req.query
   const users = await prisma.comments.findMany({
-    where: { postId: 1 },
+    // where: { postId: postId },
     include: { commentUsers: true },
   })
 

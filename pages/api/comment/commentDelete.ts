@@ -1,17 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../lib/prisma'
+import prisma from '../../lib/prisma'
 import { compare } from 'bcryptjs'
 
 export default async function CommentDelete(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { deleteName, deletePassword, deleteId } = req.body
+  const { deleteName, deletePassword, deleteId, postId } = req.body
 
-  console.log(
-    'name + password',
-    deleteName + ' ' + deletePassword + ' ' + deleteId
-  )
+  // console.log(
+  //   'name + password',
+  //   deleteName + ' ' + deletePassword + ' ' + deleteId
+  // )
   const deleteComment = await prisma.comments.findMany({
     where: {
       id: deleteId,
@@ -21,9 +21,8 @@ export default async function CommentDelete(
     },
     include: { commentUsers: true },
   })
-  console.log('comcom', deleteComment.length)
 
-  const inco = await prisma.commentsIn.findMany({
+  const inco = await prisma.commentsInner.findMany({
     where: {
       commentsId: deleteId,
     },
@@ -37,7 +36,7 @@ export default async function CommentDelete(
       )) === true
     ) {
       if (inco.length !== 0) {
-        const result = await prisma.commentsIn.deleteMany({
+        const result = await prisma.commentsInner.deleteMany({
           where: {
             commentsId: deleteId,
           },
@@ -49,11 +48,7 @@ export default async function CommentDelete(
         },
       })
 
-      const users = await prisma.comments.findMany({
-        where: { postId: 1 },
-        include: { commentUsers: true },
-      })
-      res.json(users)
+      res.json(result)
     } else {
       res.status(200).json('비밀번호가 다릅니다.')
     }

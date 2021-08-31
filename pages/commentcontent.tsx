@@ -1,6 +1,6 @@
-import styles from '../styles/Home.module.scss'
+import styles from './Home.module.css'
 
-const CommentContent = (props) => {
+const CommentContent = (props: any) => {
   const comment = props.comment
 
   return (

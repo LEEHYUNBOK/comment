@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import UserCreate from './api/users'
 
 const Create = () => {
   const [createUserName, setCreateUserName] = useState('')
@@ -14,13 +15,12 @@ const Create = () => {
       const createNewName = e.createUserName
       const body = { createNewName, createNewPassword }
       await axios
-        .post(`http://localhost:3000/api/users`, JSON.stringify(body), {
+        .post(`/api/users`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
           alert(res.data), setUserError(res.data)
         })
-      console.log('넘어가요~create')
     } catch (error) {
       setUserError('실패하였습니다.')
       alert('실패하였습니다.')
