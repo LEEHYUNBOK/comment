@@ -1,11 +1,12 @@
 import styles from './Home.module.css'
-import { useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import SunEditor from './SunEditor'
 
 const CommentAdd = (props: any) => {
   const [commentAddName, setCommentAddName] = useState('')
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
+  console.log('commentAddContent', commentAddContent)
 
   return (
     <div className={styles.comments_input}>
@@ -23,13 +24,14 @@ const CommentAdd = (props: any) => {
           value={commentAddPassword}
         />
         <br />
-        <textarea
+        {/* <textarea
           className={styles.comment_input_area}
           id="textarea"
           onChange={(e) => setCommentAddContent(e.target.value)}
           placeholder="content"
           value={commentAddContent}
-        />
+        /> */}
+        <SunEditor height="100px" setCommentAddContent={setCommentAddContent} />
 
         <button
           name="commenting"

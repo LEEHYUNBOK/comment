@@ -7,6 +7,7 @@ import Delete from './delete'
 import CommentAdd from './commentAdd'
 import Like from './like'
 import CommentContent from './commentcontent'
+// import SunEditor from './SunEditor'
 
 const Comments = (props: any) => {
   const [comments, setComments] = useState([])
@@ -106,41 +107,44 @@ const Comments = (props: any) => {
   }
 
   return (
-    <div className={styles.comments}>
-      <h1>My Comment</h1>
+    <div>
+      <div className={styles.comments}>
+        <h1>My Comment</h1>
 
-      {/* 사용자 등록 */}
-      <Create />
-      <br />
+        {/* 사용자 등록 */}
+        <Create />
+        <br />
 
-      {/* 작성 부분 */}
-      <CommentAdd commentAdd={commentAdd} error={error} />
+        {/* 작성 부분 */}
+        <CommentAdd commentAdd={commentAdd} error={error} />
 
-      {/* comments 목록 부분 */}
-      {comments.map((comment) => (
-        <div key={comment.id} className={styles.comments_print}>
-          {/* 댓글 내용 */}
-          <CommentContent comment={comment} />
+        {/* comments 목록 부분 */}
+        {comments.map((comment) => (
+          <div key={comment.id} className={styles.comments_print}>
+            {/* 댓글 내용 */}
+            <CommentContent comment={comment} />
 
-          {/* 좋아요 버튼 */}
-          <Like
-            commentlike={commentlike}
-            commentId={comment.id}
-            commentLike={comment.like}
-          />
+            {/* 좋아요 버튼 */}
+            <Like
+              commentlike={commentlike}
+              commentId={comment.id}
+              commentLike={comment.like}
+            />
 
-          {/* 삭제 버튼 */}
-          <Delete
-            commentDeleteId={comment.id}
-            commentDelete={commentDelete}
-            deleteError={deleteError}
-          />
+            {/* 삭제 버튼 */}
+            <Delete
+              commentDeleteId={comment.id}
+              commentDelete={commentDelete}
+              deleteError={deleteError}
+            />
 
-          {/* 대댓글 버튼 */}
-          <InnerComment commentId={comment.id} />
-          <br />
-        </div>
-      ))}
+            {/* 대댓글 버튼 */}
+            <InnerComment commentId={comment.id} />
+            <br />
+          </div>
+        ))}
+      </div>
+      {/* <SunEditor /> */}
     </div>
   )
 }
