@@ -6,11 +6,11 @@ export default async function InnerCommentDelete(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log('body,', req.body)
+  // console.log('body,', req.body)
 
   const { name, password, id, commentId } = req.body
 
-  console.log('name + password', name + ' ' + password + ' ' + id)
+  // console.log('name + password', name + ' ' + password + ' ' + id)
   const deleteComment = await prisma.commentsInner.findMany({
     where: {
       id: id,

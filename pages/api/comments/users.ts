@@ -7,14 +7,12 @@ export default async function UserCreate(
 ) {
   const { createNewName, createNewPassword } = req.body
   const hashPassword: any = await hash(createNewPassword, 10)
-  console.log('@@@@@', createNewName)
 
   const existUser = await prisma.commentUsers.findUnique({
     where: {
       name: createNewName,
     },
   })
-  console.log('@@@', existUser)
 
   if (existUser === null) {
     const newUser = await prisma.commentUsers.create({
@@ -23,7 +21,6 @@ export default async function UserCreate(
         password: hashPassword,
       },
     })
-    console.log('result', newUser)
     res.status(200).json('어서오세요')
   } else {
     res.status(200).json('이미 존재하는 사용자 이름입니다.')

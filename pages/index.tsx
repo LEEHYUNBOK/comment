@@ -7,7 +7,6 @@ import Delete from './delete'
 import CommentAdd from './commentAdd'
 import Like from './like'
 import CommentContent from './commentcontent'
-// import SunEditor from './SunEditor'
 
 const Comments = (props: any) => {
   const [comments, setComments] = useState([])
@@ -66,6 +65,7 @@ const Comments = (props: any) => {
           if (typeof res.data === 'string') {
             setError(res.data)
           } else {
+            setError('등록')
             setError('')
             commentPrint()
           }

@@ -1,12 +1,21 @@
 import styles from './Home.module.css'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import SunEditor from './SunEditor'
+// import sunstyles from './suneditor.module.css'
 
 const CommentAdd = (props: any) => {
   const [commentAddName, setCommentAddName] = useState('')
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
-  console.log('commentAddContent', commentAddContent)
+
+  // 댓글이 제대로 등록 될때 실행(사실 props.error의 내용이 변한때마다 실행)
+  useEffect(() => {
+    if (props.error === '등록') {
+      setCommentAddContent('')
+      setCommentAddName('')
+      setCommentAddPassword('')
+    }
+  }, [props.error])
 
   return (
     <div className={styles.comments_input}>
@@ -31,21 +40,24 @@ const CommentAdd = (props: any) => {
           placeholder="content"
           value={commentAddContent}
         /> */}
-        <SunEditor height="100px" setCommentAddContent={setCommentAddContent} />
+        <SunEditor
+          setCommentAddContent={setCommentAddContent}
+          commentAddContent={commentAddContent}
+        />
 
         <button
+          disabled={
+            !commentAddContent || !commentAddPassword || !commentAddName
+          }
           name="commenting"
           value="Signup"
-          onClick={() => (
+          onClick={() => {
             props.commentAdd({
               commentAddName,
               commentAddContent,
               commentAddPassword,
-            }),
-            setCommentAddContent(''),
-            setCommentAddName(''),
-            setCommentAddPassword('')
-          )}
+            })
+          }}
         >
           Signup
         </button>

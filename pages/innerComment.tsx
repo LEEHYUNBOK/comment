@@ -57,6 +57,7 @@ const InnerComment = (props: any) => {
           if (typeof res.data === 'string') {
             setError(res.data)
           } else {
+            setError('등록')
             setError('')
             innerCommentPrint()
           }
@@ -71,7 +72,6 @@ const InnerComment = (props: any) => {
   const innerCommentDelete = async (e: any) => {
     try {
       const commentId = props.id
-      console.log('lllllll', e)
 
       const id = e.commentDeleteId
       const deleteName = e.commentDeleteName
@@ -120,9 +120,10 @@ const InnerComment = (props: any) => {
               </div>
 
               {/* 댓글 내용 */}
-              <div className={styles.comments_print_content}>
-                {innerComment.content}
-              </div>
+              <div
+                dangerouslySetInnerHTML={{ __html: innerComment.content }}
+                className={styles.comments_print_content}
+              />
               {/* <CommentContent comment={innerComment} /> */}
 
               {/* 좋아요 버튼 */}
