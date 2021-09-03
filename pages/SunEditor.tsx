@@ -1,18 +1,16 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import 'suneditor/dist/css/suneditor.min.css' // Import Sun Editor's CSS File'
-// import styles from './suneditor.module.css'
 
-const SunEditor = dynamic(() => import('suneditor-react'), {
+const SunEditors = dynamic(() => import('suneditor-react'), {
   ssr: false,
 })
 
-const MyComponent = (props) => {
+const SunEditor = (props: any) => {
   return (
     <div>
-      <SunEditor
+      <SunEditors
         setOptions={{
-          iframeCSSFileName: ['./suneditor.module.css'],
           width: 'auto',
           height: 'auto',
           minHeight: '100px',
@@ -45,12 +43,7 @@ const MyComponent = (props) => {
         onChange={props.setCommentAddContent}
         setContents={props.commentAddContent}
       />
-      {/* <SunEditor
-        setAllPlugins={true}
-        onChange={props.setCommentAddContent}
-        setContents={props.commentAddContent}
-      /> */}
     </div>
   )
 }
-export default MyComponent
+export default SunEditor

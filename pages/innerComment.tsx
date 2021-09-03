@@ -103,28 +103,37 @@ const InnerComment = (props: any) => {
   return (
     <div className={styles.innerComments_print}>
       <details>
-        <summary onClick={() => innerCommentPrint()}>더보기</summary>
+        <summary
+          className={styles.comment_dropbar}
+          onClick={() => innerCommentPrint()}
+        >
+          <strong>더보기</strong>
+        </summary>
         <div>
-          {innerComments.map((innerComment) => (
+          {innerComments.map((innerComment: any) => (
             <div key={innerComment.id} className={styles.comments_print}>
               {/* 댓글 내용 */}
 
               {/* 사용자 명 */}
-              <div className={styles.comments_print_user}>
+              {/* <div className={styles.comments_print_user}>
                 cname = {innerComment.commentUsers.name}
-              </div>
+              </div> */}
 
               {/* 작성 날짜 */}
-              <div className={styles.comments_print_date}>
+              {/* <div className={styles.comments_print_date}>
                 {innerComment.createdAt}
-              </div>
+              </div> */}
 
               {/* 댓글 내용 */}
-              <div
-                dangerouslySetInnerHTML={{ __html: innerComment.content }}
+              {/* <div
+                dangerouslySetInnerHTML={{
+                  __html: innerComment.content
+                    .replace(/<p/g, '<div')
+                    .replace(/<\/p>/g, '</div>'),
+                }}
                 className={styles.comments_print_content}
-              />
-              {/* <CommentContent comment={innerComment} /> */}
+              /> */}
+              <CommentContent comment={innerComment} />
 
               {/* 좋아요 버튼 */}
               <Like

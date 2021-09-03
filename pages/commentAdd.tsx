@@ -43,14 +43,14 @@ const CommentAdd = (props: any) => {
         <SunEditor
           setCommentAddContent={setCommentAddContent}
           commentAddContent={commentAddContent}
-        />
-
+        ></SunEditor>
         <button
+          className={styles.comment_button}
           disabled={
             !commentAddContent || !commentAddPassword || !commentAddName
           }
           name="commenting"
-          value="Signup"
+          value="댓글 작성"
           onClick={() => {
             props.commentAdd({
               commentAddName,
@@ -59,7 +59,7 @@ const CommentAdd = (props: any) => {
             })
           }}
         >
-          Signup
+          댓글 작성
         </button>
         <span>{props.error}</span>
       </div>

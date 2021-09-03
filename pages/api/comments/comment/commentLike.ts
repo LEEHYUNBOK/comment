@@ -13,7 +13,7 @@ export default async function CommentLike(
     },
   })
 
-  const like = likeNum.like + 1
+  const like = likeNum !== null ? likeNum.like + 1 : 0
 
   const result = await prisma.comments.update({
     where: { id: commentLikeId },
