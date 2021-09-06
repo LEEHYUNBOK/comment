@@ -6,8 +6,9 @@ export default async function CommentPrint(
   res: NextApiResponse
 ) {
   const { postId } = req.query
+
   const users = await prisma.comments.findMany({
-    // where: { postId: String(postId) },
+    where: { postId: String(postId) },
     include: { commentUsers: true },
   })
 

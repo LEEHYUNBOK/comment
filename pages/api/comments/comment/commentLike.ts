@@ -1,10 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../lib/prisma'
 
-export default async function CommentLike(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function CommentLike(req: NextApiRequest, res: NextApiResponse) {
   const { commentLikeId, postId } = req.body
 
   const likeNum = await prisma.comments.findUnique({

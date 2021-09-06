@@ -46,9 +46,9 @@
   word-break: break-all;
 }
 
-.comment_dropbar {
+/* .comment_dropbar {
   color: rgb(3, 197, 132);
-}
+} */
 
 .comment_button {
   align-items: center;

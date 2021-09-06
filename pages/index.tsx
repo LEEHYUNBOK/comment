@@ -13,6 +13,7 @@ const Comments = (props: any) => {
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const postId = '1'
+  // const postId = props.postId
   const commentURL = '/api/comments/comment/'
 
   // 댓글 출력 기능
@@ -31,7 +32,7 @@ const Comments = (props: any) => {
 
   useEffect(() => {
     commentPrint()
-  }, [])
+  }, [postId])
 
   // 좋아요 기능
   const commentlike = async (e: any) => {
@@ -56,6 +57,7 @@ const Comments = (props: any) => {
       const addContent = e.commentAddContent
 
       const body = { addName, addContent, postId, addPassword }
+      console.log('@@@@@@@', body)
 
       await axios
         .post(commentURL + `commentAdd`, JSON.stringify(body), {
