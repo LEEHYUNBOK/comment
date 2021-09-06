@@ -14,7 +14,7 @@ const CommentAdd = (props: any) => {
       setCommentAddContent('')
       setCommentAddName('')
       setCommentAddPassword('')
-    }
+    } //hosmn
   }, [props.error])
 
   return (
