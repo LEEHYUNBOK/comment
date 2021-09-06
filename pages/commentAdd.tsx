@@ -15,7 +15,7 @@ const CommentAdd = (props: any) => {
       setCommentAddName('')
       setCommentAddPassword('')
     }
-  }, [props.error]) //원격 test
+  }, [props.error]) //원격 testdsddd
 
   return (
     <div className={styles.comments_input}>
