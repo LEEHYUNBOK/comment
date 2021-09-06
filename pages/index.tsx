@@ -40,7 +40,7 @@ const Comments = (props: any) => {
       const { commentLikeId } = e
       const body = { commentLikeId, postId }
       await axios
-        .put(commentURL + 'commentLike', JSON.stringify(body), {
+        .put(commentURL + 'commentLike', body, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => commentPrint())
@@ -57,10 +57,9 @@ const Comments = (props: any) => {
       const addContent = e.commentAddContent
 
       const body = { addName, addContent, postId, addPassword }
-      console.log('@@@@@@@', body)
 
       await axios
-        .post(commentURL + `commentAdd`, JSON.stringify(body), {
+        .post(commentURL + `commentAdd`, body, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {

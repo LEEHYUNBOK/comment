@@ -7,8 +7,6 @@ export default async function CommentAdd(
   res: NextApiResponse
 ) {
   const { addName, addContent, postId, addPassword } = req.body
-  console.log('icanican', req.body)
-  console.log('@@@@@@@@@@@@@', addName)
 
   const user = await prisma.commentUsers.findUnique({
     where: {
