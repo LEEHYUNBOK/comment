@@ -44,8 +44,9 @@ const CommentAdd = (props: any) => {
           setCommentAddContent={setCommentAddContent}
           commentAddContent={commentAddContent}
         ></SunEditor>
+
         <button
-          className={styles.comment_button}
+          // className={styles.comment_button}
           disabled={
             !commentAddContent || !commentAddPassword || !commentAddName
           }
