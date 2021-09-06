@@ -6,10 +6,25 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^2.28.0",
+    "@types/node": "^16.6.0",
+    "@types/react": "^17.0.17",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "swr": "^0.1.18"
+    "sass": "^1.37.5",
+    "suneditor": "^2.41.3",
+    "suneditor-react": "^3.3.0",
+    "swr": "^0.1.18",
+    "typescript": "^4.3.5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/bcryptjs": "^2.4.2",
+    "prisma": "^2.28.0"
+  }
 }
