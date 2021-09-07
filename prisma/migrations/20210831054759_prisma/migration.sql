@@ -37,13 +37,13 @@ CREATE TABLE `comments` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
 -- CreateTable
-CREATE TABLE `posts` (
-    `id` VARCHAR(24) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
+-- CREATE TABLE `posts` (
+--     `id` VARCHAR(24) NOT NULL,
+--     `name` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `posts.name_unique`(`name`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+--     UNIQUE INDEX `posts.name_unique`(`name`),
+--     PRIMARY KEY (`id`)
+-- ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `commentsInner` ADD FOREIGN KEY (`authorId`) REFERENCES `commentUsers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

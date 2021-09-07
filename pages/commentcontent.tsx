@@ -2,10 +2,10 @@ import styles from './Home.module.css'
 
 const CommentContent = (props: any) => {
   const comment = props.comment
-  console.log(
-    'tttttt',
-    comment.content.replace(/<p/g, '<div').replace(/<\/p>/g, '</div></br>')
-  )
+  // console.log(
+  //   'tttttt',
+  //   comment.content.replace(/<p/g, '<div').replace(/<\/p>/g, '</div></br>')
+  // )
 
   return (
     <div>
@@ -20,9 +20,7 @@ const CommentContent = (props: any) => {
       {/* 댓글 내용 */}
       <div
         dangerouslySetInnerHTML={{
-          __html: comment.content
-            .replace(/<p/g, '<div')
-            .replace(/<\/p>/g, '</div>'),
+          __html: comment.content.replace(/<p/g, '<div').replace(/<\/p>/g, '</div>'),
         }}
         className={styles.comments_print_content}
       >
