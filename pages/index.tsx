@@ -119,7 +119,7 @@ const Comments = (props: any) => {
         <CommentAdd commentAdd={commentAdd} error={error} />
 
         {/* comments 목록 부분 */}
-        {comments.map((comment) => (
+        {comments.map((comment: any) => (
           <div key={comment.id} className={styles.comments_print}>
             {/* 댓글 내용 */}
             <CommentContent comment={comment} />
