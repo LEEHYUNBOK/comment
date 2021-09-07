@@ -13,7 +13,6 @@ const Comments = (props: any) => {
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const postId = '1'
-  // const postId = props.postId
   const commentURL = '/api/comments/comment/'
 
   // 댓글 출력 기능
@@ -32,7 +31,7 @@ const Comments = (props: any) => {
 
   useEffect(() => {
     commentPrint()
-  }, [postId])
+  }, [])
 
   // 좋아요 기능
   const commentlike = async (e: any) => {
@@ -40,7 +39,7 @@ const Comments = (props: any) => {
       const { commentLikeId } = e
       const body = { commentLikeId, postId }
       await axios
-        .put(commentURL + 'commentLike', body, {
+        .put(commentURL + 'commentLike', JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => commentPrint())
@@ -59,7 +58,7 @@ const Comments = (props: any) => {
       const body = { addName, addContent, postId, addPassword }
 
       await axios
-        .post(commentURL + `commentAdd`, body, {
+        .post(commentURL + `commentAdd`, JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
@@ -120,7 +119,7 @@ const Comments = (props: any) => {
         <CommentAdd commentAdd={commentAdd} error={error} />
 
         {/* comments 목록 부분 */}
-        {comments.map((comment: any) => (
+        {comments.map((comment) => (
           <div key={comment.id} className={styles.comments_print}>
             {/* 댓글 내용 */}
             <CommentContent comment={comment} />

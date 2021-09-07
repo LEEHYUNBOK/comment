@@ -13,9 +13,9 @@ export default async function CommentAdd(
       name: addName,
     },
   })
-  // console.log('icanican', req.body)
+  console.log('icanican', req.body)
 
-  // console.log('users', user)
+  console.log('users', user)
 
   if (user !== null) {
     if ((await compare(addPassword, user.password)) === true) {

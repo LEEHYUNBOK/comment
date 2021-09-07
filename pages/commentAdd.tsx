@@ -32,7 +32,6 @@ const CommentAdd = (props: any) => {
           type="password"
           value={commentAddPassword}
         />
-        <br />
         {/* <textarea
           className={styles.comment_input_area}
           id="textarea"
