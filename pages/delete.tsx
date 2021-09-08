@@ -1,3 +1,4 @@
+import styles from './Home.module.css'
 import { useState } from 'react'
 import axios from 'axios'
 
@@ -7,8 +8,8 @@ const Delete = (props: any) => {
   const { commentDeleteId } = props
 
   return (
-    <details>
-      <summary>삭제</summary>
+    <details className={styles.comment_dropbar}>
+      <summary className={styles.comment_dropbar_summary}>삭제</summary>
       <div>
         <input
           onChange={(e) => setCommentDeleteName(e.target.value)}

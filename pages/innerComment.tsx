@@ -102,9 +102,9 @@ const InnerComment = (props: any) => {
 
   return (
     <div className={styles.innerComments_print}>
-      <details>
+      <details className={styles.comment_dropbar}>
         <summary
-          className={styles.comment_dropbar}
+          className={styles.comment_dropbar_summary}
           onClick={() => innerCommentPrint()}
         >
           <strong>더보기</strong>

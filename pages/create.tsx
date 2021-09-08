@@ -43,6 +43,7 @@ const Create = () => {
       />
 
       <button
+        disabled={!createUserName || !createUserPassword}
         name="commenting"
         value="Signup"
         onClick={() => createUser({ createUserName, createUserPassword })}

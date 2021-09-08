@@ -45,10 +45,14 @@
   padding: 1% 0 1% 0;
   word-break: break-all;
 }
-
 /* .comment_dropbar {
-  color: rgb(3, 197, 132);
+  float: left;
 } */
+
+.comment_dropbar_summary {
+  display: block;
+  /* color: rgb(3, 197, 132); */
+}
 
 .comment_button {
   align-items: center;
