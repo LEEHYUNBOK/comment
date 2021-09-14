@@ -26,15 +26,13 @@ const InnerComment = (props: any) => {
   // 대댓글 좋아요 기능
   const innerCommentlike = async (e: any) => {
     try {
-      const commentLikeId = e
+      const { commentLikeId, checked } = e
+      console.log('$$$', e)
+      const body = { commentLikeId, checked }
       await axios
-        .put(
-          innerCommentURL + 'innerCommentLike',
-          JSON.stringify(commentLikeId),
-          {
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
+        .put(innerCommentURL + 'innerCommentLike', JSON.stringify(body), {
+          headers: { 'Content-Type': 'application/json' },
+        })
         .then((res) => innerCommentPrint())
     } catch (error) {
       console.error(error)
@@ -113,26 +111,6 @@ const InnerComment = (props: any) => {
           {innerComments.map((innerComment: any) => (
             <div key={innerComment.id} className={styles.comments_print}>
               {/* 댓글 내용 */}
-
-              {/* 사용자 명 */}
-              {/* <div className={styles.comments_print_user}>
-                cname = {innerComment.commentUsers.name}
-              </div> */}
-
-              {/* 작성 날짜 */}
-              {/* <div className={styles.comments_print_date}>
-                {innerComment.createdAt}
-              </div> */}
-
-              {/* 댓글 내용 */}
-              {/* <div
-                dangerouslySetInnerHTML={{
-                  __html: innerComment.content
-                    .replace(/<p/g, '<div')
-                    .replace(/<\/p>/g, '</div>'),
-                }}
-                className={styles.comments_print_content}
-              /> */}
               <CommentContent comment={innerComment} />
 
               {/* 좋아요 버튼 */}

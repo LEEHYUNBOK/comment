@@ -36,8 +36,10 @@ const Comments = (props: any) => {
   // 좋아요 기능
   const commentlike = async (e: any) => {
     try {
-      const { commentLikeId } = e
-      const body = { commentLikeId, postId }
+      const { commentLikeId, checked } = e
+      console.log('RRRRRR', checked)
+
+      const body = { commentLikeId, postId, checked }
       await axios
         .put(commentURL + 'commentLike', JSON.stringify(body), {
           headers: { 'Content-Type': 'application/json' },

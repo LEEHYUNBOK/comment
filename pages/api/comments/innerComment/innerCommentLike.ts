@@ -1,8 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../lib/prisma'
 
-export default async function InnerCommentLike(req: NextApiRequest, res: NextApiResponse) {
-  const { commentLikeId } = req.body
+export default async function InnerCommentLike(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { commentLikeId, checked } = req.body
 
   const likeNum = await prisma.commentsInner.findUnique({
     where: {
@@ -10,7 +13,7 @@ export default async function InnerCommentLike(req: NextApiRequest, res: NextApi
     },
   })
 
-  const like = likeNum !== null ? likeNum.like + 1 : 0
+  const like = likeNum !== null ? likeNum.like + (checked ? 1 : -1) : 0
 
   const result = await prisma.commentsInner.update({
     where: { id: commentLikeId },
