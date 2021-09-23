@@ -45,7 +45,9 @@ const InnerComment = (props: any) => {
       const addName = e.commentAddName
       const addContent = e.commentAddContent
       const addPassword = e.commentAddPassword
-      const body = { addName, addContent, commentId, addPassword }
+      const userIp = e.userIp
+
+      const body = { addName, addContent, commentId, addPassword, userIp }
 
       await axios
         .post(innerCommentURL + `innerCommentAdd`, JSON.stringify(body), {

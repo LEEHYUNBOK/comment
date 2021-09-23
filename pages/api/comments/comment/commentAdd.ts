@@ -6,7 +6,7 @@ export default async function CommentAdd(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { addName, addContent, postId, addPassword } = req.body
+  const { addName, addContent, postId, addPassword, userIp } = req.body
 
   const user = await prisma.commentUsers.findUnique({
     where: {
@@ -17,11 +17,12 @@ export default async function CommentAdd(
 
   console.log('users', user)
 
-  if (user !== null) {
+  if (user !== null && addContent.replace(/(<([^>]+)>)/gi, '') !== '') {
     if ((await compare(addPassword, user.password)) === true) {
       const commentCreate = await prisma.comments.create({
         data: {
           content: addContent,
+          userIP: userIp,
           commentUsers: { connect: { name: addName } },
           posts: { connect: { id: postId } },
         },
@@ -32,6 +33,14 @@ export default async function CommentAdd(
       res.status(200).json('비밀번호가 다릅니다.')
     }
   } else {
-    res.status(200).json('사용자가 아닙니다.')
+    if (addName === '') {
+      res.status(200).json('사용자 입력하세요')
+    } else if (addPassword === '') {
+      res.status(200).json('비밀번호 입력하세요')
+    } else if (addContent.replace(/(<([^>]+)>)/gi, '') === '') {
+      res.status(200).json('내용을 입력하세요')
+    } else {
+      res.status(200).json('사용자가 아닙니다.')
+    }
   }
 }

@@ -7,7 +7,7 @@ const CommentAdd = (props: any) => {
   const [commentAddName, setCommentAddName] = useState('')
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
-  const [userIp, setUserIp] = useState('')
+  const [userIp, setUserIp] = useState('test')
 
   // 댓글이 제대로 등록 될때 실행(사실 props.error의 내용이 변한때마다 실행)
   useEffect(() => {
@@ -15,7 +15,7 @@ const CommentAdd = (props: any) => {
       setCommentAddContent('')
       setCommentAddName('')
       setCommentAddPassword('')
-    } //hosmn
+    }
   }, [props.error])
 
   return (
@@ -45,12 +45,15 @@ const CommentAdd = (props: any) => {
           setCommentAddContent={setCommentAddContent}
           commentAddContent={commentAddContent}
         ></SunEditor>
-
+        {console.log(
+          'commentAddContent',
+          commentAddContent.replace(/(<([^>]+)>)/gi, '')
+        )}
         <button
           // className={styles.comment_button}
-          disabled={
-            !commentAddContent || !commentAddPassword || !commentAddName
-          }
+          // disabled={
+          //   !commentAddContent || !commentAddPassword || !commentAddName
+          // }
           name="commenting"
           value="댓글 작성"
           onClick={() => {
