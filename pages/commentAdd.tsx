@@ -7,6 +7,7 @@ const CommentAdd = (props: any) => {
   const [commentAddName, setCommentAddName] = useState('')
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
+  const [userIp, setUserIp] = useState('')
 
   // 댓글이 제대로 등록 될때 실행(사실 props.error의 내용이 변한때마다 실행)
   useEffect(() => {
@@ -39,6 +40,7 @@ const CommentAdd = (props: any) => {
           placeholder="content"
           value={commentAddContent}
         /> */}
+
         <SunEditor
           setCommentAddContent={setCommentAddContent}
           commentAddContent={commentAddContent}
@@ -56,6 +58,7 @@ const CommentAdd = (props: any) => {
               commentAddName,
               commentAddContent,
               commentAddPassword,
+              userIp,
             })
           }}
         >

@@ -56,8 +56,9 @@ const Comments = (props: any) => {
       const addPassword = e.commentAddPassword
       const addName = e.commentAddName
       const addContent = e.commentAddContent
+      const userIp = e.userIp
 
-      const body = { addName, addContent, postId, addPassword }
+      const body = { addName, addContent, postId, addPassword, userIp }
 
       await axios
         .post(commentURL + `commentAdd`, JSON.stringify(body), {

@@ -23,7 +23,7 @@ const Like = (props: any) => {
           }
         }}
       />
-      Like {like} {String(checked)}
+      Like {like}
     </div>
   )
 }

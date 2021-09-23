@@ -14,13 +14,14 @@ const CommentContent = (props: any) => {
       </div>
       {/* 작성 날짜 */}
       <div className={styles.comments_print_date}>
-        {/* {moment(comment.createdAt, 'YYYY.MM.DD').format('YYYY-MM-DD')} */}
         {comment.createdAt.toLocaleString()}
       </div>
       {/* 댓글 내용 */}
       <div
         dangerouslySetInnerHTML={{
-          __html: comment.content.replace(/<p/g, '<div').replace(/<\/p>/g, '</div>'),
+          __html: comment.content
+            .replace(/<p/g, '<div')
+            .replace(/<\/p>/g, '</div>'),
         }}
         className={styles.comments_print_content}
       >

@@ -20,6 +20,7 @@ model comments {
   createdAt     DateTime        @default(now())
   content       String?         @db.LongText
   like          Int             @default(0)
+  userIP        String
   authorId      Int
   postId        String          @db.VarChar(24)
   commentUsers  commentUsers    @relation(fields: [authorId], references: [id])
@@ -35,6 +36,7 @@ model commentsInner {
   createdAt    DateTime     @default(now())
   content      String?      @db.LongText
   like         Int          @default(0)
+  userIP        String
   authorId     Int
   commentsId   Int
   commentUsers commentUsers @relation(fields: [authorId], references: [id])
