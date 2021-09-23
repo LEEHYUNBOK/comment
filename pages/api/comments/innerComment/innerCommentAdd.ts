@@ -35,7 +35,7 @@ export default async function InnerCommentAdd(
       res.status(200).json('사용자를 입력하세요')
     } else if (addPassword === '') {
       res.status(200).json('비밀번호를 입력하세요')
-    } else if (addContent.replace(/(<([^>]+)>)/gi, '')) {
+    } else if (addContent.replace(/(<([^>]+)>)/gi, '') === '') {
       res.status(200).json('내용을 입력하세요')
     } else {
       res.status(200).json('사용자가 아닙니다.')
