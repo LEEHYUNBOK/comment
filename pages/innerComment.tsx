@@ -1,17 +1,29 @@
 import styles from './Home.module.css'
-import { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import Delete from './delete'
 import CommentAdd from './commentAdd'
 import Like from './like'
 import CommentContent from './commentcontent'
 
+import Box from '@mui/material/Box'
+import Portal from '@mui/material/Portal'
+
 const InnerComment = (props: any) => {
   const [innerComments, setInnerComments] = useState([])
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const { commentId } = props
+
   const innerCommentURL = '/api/comments/innerComment/'
+
+  const innerCommentContainer = useRef(null)
+
+  const [innerCommentButton, setInnerCommentButton] = useState(false)
+
+  const innerCommmentButtonClick = () => {
+    setInnerCommentButton(!innerCommentButton)
+  }
 
   //대댓글 출력 기능
   const innerCommentPrint = async () => {
@@ -22,6 +34,10 @@ const InnerComment = (props: any) => {
     })
     setInnerComments(res.data)
   }
+
+  useEffect(() => {
+    innerCommentPrint()
+  }, [])
 
   // 대댓글 좋아요 기능
   const innerCommentlike = async (e: any) => {
@@ -101,41 +117,45 @@ const InnerComment = (props: any) => {
   }
 
   return (
-    <div className={styles.innerComments_print}>
-      <details className={styles.comment_dropbar}>
-        <summary
-          className={styles.comment_dropbar_summary}
-          onClick={() => innerCommentPrint()}
-        >
-          <strong>더보기</strong>
-        </summary>
-        <div>
-          {innerComments.map((innerComment: any) => (
-            <div key={innerComment.id} className={styles.comments_print}>
-              {/* 댓글 내용 */}
-              <CommentContent comment={innerComment} />
+    <>
+      <button
+        type="button"
+        onClick={innerCommmentButtonClick}
+        className={styles.comment_button}
+      >
+        더보기
+      </button>
+      <Box ref={innerCommentContainer}>
+        {innerCommentButton ? (
+          <Portal container={innerCommentContainer.current}>
+            <div className={styles.innerComments_print}>
+              {innerComments.map((innerComment: any) => (
+                <div key={innerComment.id} className={styles.comments_print}>
+                  {/* 댓글 내용 */}
+                  <CommentContent comment={innerComment} />
 
-              {/* 좋아요 버튼 */}
-              <Like
-                commentlike={innerCommentlike}
-                commentId={innerComment.id}
-                commentLike={innerComment.like}
-              />
+                  {/* 좋아요 버튼 */}
+                  <Like
+                    commentlike={innerCommentlike}
+                    commentId={innerComment.id}
+                    commentLike={innerComment.like}
+                  />
 
-              {/* 삭제 버튼 */}
-              <Delete
-                commentDeleteId={innerComment.id}
-                commentDelete={innerCommentDelete}
-                deleteError={deleteError}
-              />
+                  {/* 삭제 버튼 */}
+                  <Delete
+                    commentDeleteId={innerComment.id}
+                    commentDelete={innerCommentDelete}
+                    deleteError={deleteError}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* 작성 부분 */}
-        <CommentAdd commentAdd={innerCommentAdd} error={error} />
-      </details>
-    </div>
+            {/* 작성 부분 */}
+            <CommentAdd commentAdd={innerCommentAdd} error={error} />
+          </Portal>
+        ) : null}
+      </Box>
+    </>
   )
 }
 export default InnerComment

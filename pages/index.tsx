@@ -1,5 +1,5 @@
 import styles from './Home.module.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import Create from './create'
 import InnerComment from './innerComment'
@@ -12,6 +12,9 @@ const Comments = (props: any) => {
   const [comments, setComments] = useState([])
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
+
+  const container = useRef(null)
+
   const postId = '1'
   const commentURL = '/api/comments/comment/'
 
@@ -31,7 +34,7 @@ const Comments = (props: any) => {
 
   useEffect(() => {
     commentPrint()
-  }, [])
+  }, [postId])
 
   // 좋아요 기능
   const commentlike = async (e: any) => {
@@ -142,7 +145,7 @@ const Comments = (props: any) => {
             />
 
             {/* 대댓글 버튼 */}
-            <InnerComment commentId={comment.id} />
+            <InnerComment commentId={comment.id} container={container} />
             <br />
           </div>
         ))}
