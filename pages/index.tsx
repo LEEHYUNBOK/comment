@@ -16,13 +16,6 @@ const Comments = (props: any) => {
   const postId = '1'
   const commentURL = '/api/comments/comment/'
 
-  const [ip, setIP] = useState('')
-  const getData = async () => {
-    const res = await axios.get('https://geolocation-db.com/json/')
-    console.log(res.data)
-    setIP(res.data.IPv4)
-  }
-
   // 댓글 출력 기능
   const commentPrint = async () => {
     try {

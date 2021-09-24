@@ -1,6 +1,7 @@
 import styles from './Home.module.css'
 import React, { useState, useEffect } from 'react'
 import SunEditor from './SunEditor'
+import axios from 'axios'
 // import sunstyles from './suneditor.module.css'
 
 const CommentAdd = (props: any) => {
@@ -8,9 +9,14 @@ const CommentAdd = (props: any) => {
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
   const [userIp, setUserIp] = useState('test')
-
+  // const getUserIp = async () => {
+  //   const res = await axios.get('https://geolocation-db.com/json/')
+  //   setUserIp(res.data.IPv4)
+  // }
   // 댓글이 제대로 등록 될때 실행(사실 props.error의 내용이 변한때마다 실행)
   useEffect(() => {
+    // getUserIp()
+
     if (props.error === '등록') {
       setCommentAddContent('')
       setCommentAddName('')
@@ -47,7 +53,7 @@ const CommentAdd = (props: any) => {
         ></SunEditor>
 
         <button
-          // className={styles.comment_button}
+          className={styles.comment_button}
           // disabled={
           //   !commentAddContent || !commentAddPassword || !commentAddName
           // }
