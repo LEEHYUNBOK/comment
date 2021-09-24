@@ -8,14 +8,14 @@ const CommentAdd = (props: any) => {
   const [commentAddName, setCommentAddName] = useState('')
   const [commentAddPassword, setCommentAddPassword] = useState('')
   const [commentAddContent, setCommentAddContent] = useState('')
-  const [userIp, setUserIp] = useState('test')
-  // const getUserIp = async () => {
-  //   const res = await axios.get('https://geolocation-db.com/json/')
-  //   setUserIp(res.data.IPv4)
-  // }
+  const [userIp, setUserIp] = useState('')
+  const getUserIp = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    setUserIp(res.data.IPv4)
+  }
   // 댓글이 제대로 등록 될때 실행(사실 props.error의 내용이 변한때마다 실행)
   useEffect(() => {
-    // getUserIp()
+    getUserIp()
 
     if (props.error === '등록') {
       setCommentAddContent('')
