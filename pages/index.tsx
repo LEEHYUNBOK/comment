@@ -13,10 +13,15 @@ const Comments = (props: any) => {
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
 
-  const container = useRef(null)
-
   const postId = '1'
   const commentURL = '/api/comments/comment/'
+
+  const [ip, setIP] = useState('')
+  const getData = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data)
+    setIP(res.data.IPv4)
+  }
 
   // 댓글 출력 기능
   const commentPrint = async () => {
@@ -145,7 +150,7 @@ const Comments = (props: any) => {
             />
 
             {/* 대댓글 버튼 */}
-            <InnerComment commentId={comment.id} container={container} />
+            <InnerComment commentId={comment.id} />
             <br />
           </div>
         ))}

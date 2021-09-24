@@ -13,13 +13,14 @@ const InnerComment = (props: any) => {
   const [innerComments, setInnerComments] = useState([])
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
+
+  // dropdown 박스용
+  const [innerCommentButton, setInnerCommentButton] = useState(false)
+  const innerCommentContainer = useRef(null)
+
   const { commentId } = props
 
   const innerCommentURL = '/api/comments/innerComment/'
-
-  const innerCommentContainer = useRef(null)
-
-  const [innerCommentButton, setInnerCommentButton] = useState(false)
 
   const innerCommmentButtonClick = () => {
     setInnerCommentButton(!innerCommentButton)
@@ -149,9 +150,9 @@ const InnerComment = (props: any) => {
                   />
                 </div>
               ))}
+              {/* 작성 부분 */}
+              <CommentAdd commentAdd={innerCommentAdd} error={error} />
             </div>
-            {/* 작성 부분 */}
-            <CommentAdd commentAdd={innerCommentAdd} error={error} />
           </Portal>
         ) : null}
       </Box>
