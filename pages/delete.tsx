@@ -1,13 +1,26 @@
 import styles from './Home.module.css'
-import { useState, useRef } from 'react'
+import {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import axios from 'axios'
 
 import Box from '@mui/material/Box'
 import Portal from '@mui/material/Portal'
 
-const Delete = (props: any) => {
+const Delete = forwardRef((props: any, ref) => {
   const [commentDeleteName, setCommentDeleteName] = useState('')
   const [commentDeletePassword, setCommentDeletePassword] = useState('')
+  const [deleteError, setDeleteError] = useState('')
+
+  useImperativeHandle(ref, () => ({
+    errorMassage(dataErrorMassage) {
+      setDeleteError(dataErrorMassage)
+    },
+  }))
 
   const [deleteButton, setDeleteButton] = useState(false)
   const deleteContainer = useRef(null)
@@ -60,13 +73,13 @@ const Delete = (props: any) => {
                 Signup
               </button>
               {/* &emsp; */}
-              <div>{props.deleteError}</div>
+              <div>{deleteError}</div>
             </div>
           </Portal>
         ) : null}
       </Box>
     </>
   )
-}
+})
 
 export default Delete

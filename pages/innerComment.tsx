@@ -12,7 +12,8 @@ import Portal from '@mui/material/Portal'
 const InnerComment = (props: any) => {
   const [innerComments, setInnerComments] = useState([])
   const [error, setError] = useState('')
-  const [deleteError, setDeleteError] = useState('')
+
+  const deleteErrorMassage = useRef(null)
 
   // dropdown 박스용
   const [innerCommentButton, setInnerCommentButton] = useState(false)
@@ -105,9 +106,9 @@ const InnerComment = (props: any) => {
         })
         .then((res) => {
           if (typeof res.data === 'string') {
-            setDeleteError(res.data)
+            deleteErrorMassage.current.errorMassage(res.data)
           } else {
-            setDeleteError('')
+            deleteErrorMassage.current.errorMassage('')
             innerCommentPrint()
           }
         })
@@ -144,9 +145,9 @@ const InnerComment = (props: any) => {
 
                   {/* 삭제 버튼 */}
                   <Delete
+                    ref={deleteErrorMassage}
                     commentDeleteId={innerComment.id}
                     commentDelete={innerCommentDelete}
-                    deleteError={deleteError}
                   />
                 </div>
               ))}

@@ -11,7 +11,8 @@ import CommentContent from './commentcontent'
 const Comments = (props: any) => {
   const [comments, setComments] = useState([])
   const [error, setError] = useState('')
-  const [deleteError, setDeleteError] = useState('')
+
+  const deleteErrorMassage = useRef(null)
 
   const postId = '1'
   const commentURL = '/api/comments/comment/'
@@ -98,9 +99,9 @@ const Comments = (props: any) => {
         })
         .then((res) => {
           if (typeof res.data === 'string') {
-            setDeleteError(res.data)
+            deleteErrorMassage.current.errorMassage(res.data)
           } else {
-            setDeleteError('')
+            deleteErrorMassage.current.errorMassage('')
             commentPrint()
           }
         })
@@ -137,9 +138,9 @@ const Comments = (props: any) => {
 
             {/* 삭제 버튼 */}
             <Delete
+              ref={deleteErrorMassage}
               commentDeleteId={comment.id}
               commentDelete={commentDelete}
-              deleteError={deleteError}
             />
 
             {/* 대댓글 버튼 */}

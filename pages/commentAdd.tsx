@@ -11,7 +11,8 @@ const CommentAdd = (props: any) => {
   const [userIp, setUserIp] = useState('')
   const getUserIp = async () => {
     const res = await axios.get('https://geolocation-db.com/json/')
-    setUserIp(res.data.IPv4)
+
+    setUserIp(res.data.IPv4.substring(0, 7))
   }
   // 댓글이 제대로 등록 될때 실행(사실 props.error의 내용이 변한때마다 실행)
   useEffect(() => {
