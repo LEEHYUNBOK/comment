@@ -7,9 +7,9 @@ npx prisma migrate dev
 yarn dev
 ```
 
-### Deploy to Vercel
+## prisma
+prisma migrate dev --name init
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
 
 ## User 가입 부분
 
